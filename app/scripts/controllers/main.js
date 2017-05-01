@@ -10,15 +10,50 @@
 angular.module('stockApp')
     .controller('MainCtrl', function($scope, $http) {
 
+        // $http({
+        //     method: 'GET',
+        //     url: '/data/NSE-datasets-codes.csv'
+        // }).then(function successCallback(response) {
+        //     var rawData = Papa.parse(response.data);
+        //     for (var i in rawData.data) {
+        //         rawData.data[i][0] = rawData.data[i][0].substring(4);
+        //     }
+        //     $scope.nseCodesArray = rawData;
+        //     console.log(rawData);
+        // }, function errorCallback(response) {
+        //     // called asynchronously if an error occurs
+        //     // or server returns response with an error status.
+        // });
+
+        $scope.blockUICall = function() {
+            $.blockUI({
+                css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#000',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                }
+            });
+        }
+
+        $scope.unblockUICall = function() {
+            $.unblockUI();
+        }
+
+        $scope.blockUICall();
         $http({
             method: 'GET',
-            url: '/data/NSE-datasets-codes.csv'
+            url: 'https://django-backend.herokuapp.com/stocks/'
         }).then(function successCallback(response) {
-            var rawData = Papa.parse(response.data);
+            var rawData = response;
             for (var i in rawData.data) {
-                rawData.data[i][0] = rawData.data[i][0].substring(4);
+                rawData.data[i][0] = rawData.data[i][0];
             }
             $scope.nseCodesArray = rawData;
+            $scope.unblockUICall();
         }, function errorCallback(response) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
@@ -156,23 +191,7 @@ angular.module('stockApp')
             $scope.dismissSearch = true;
         }
 
-        $scope.blockUICall = function() {
-            $.blockUI({
-                css: {
-                    border: 'none',
-                    padding: '15px',
-                    backgroundColor: '#000',
-                    '-webkit-border-radius': '10px',
-                    '-moz-border-radius': '10px',
-                    opacity: .5,
-                    color: '#fff'
-                }
-            });
-        }
-
-        $scope.unblockUICall = function() {
-            $.unblockUI();
-        }
+        
 
     });
 
