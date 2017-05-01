@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc overview
- * @name gjainApp
+ * @name stockApp
  * @description
- * # gjainApp
+ * # stockApp
  *
  * Main module of the application.
  */
-var module = angular.module('gjainApp', [
+var module = angular.module('stockApp', [
     'ngAnimate',
     'ngAria',
     'ngCookies',

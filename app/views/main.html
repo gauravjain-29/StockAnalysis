@@ -40,11 +40,24 @@
         </table>
     </div>
     <br />
-    <div ng-show="ticker">
-        Entry : {{pointers.entry}} <br />
-        Target : {{pointers.target}} <br />
-        Stoploss : {{pointers.stopLoss}} <br />
-    </div>
+    <label>Recommendation</label>
+    <br /><br />
+    <table ng-show="ticker" class="table table-striped table-bordered">
+        <tr>
+            <td>Entry</td>
+            <td>{{pointers.entry}}</td>
+        </tr>
+        <tr>
+            <td>Target</td>
+            <td>{{pointers.target}}</td>
+        </tr>
+        <tr>
+            <td>Stoploss</td>
+            <td>{{pointers.stopLoss}}</td>
+        </tr>
+    </table>
+    <br /><br />
+    <label>History</label>
     <br /><br />
     <div ng-show="ticker">
         <table class="table table-striped table-bordered">
