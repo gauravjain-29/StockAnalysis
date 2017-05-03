@@ -7,6 +7,19 @@
  * # MainCtrl
  * Controller of the stockApp
  */
+
+ angular.module('stockApp').run(function($rootScope, $location, $state, LoginService) {
+    $rootScope.$on('$stateChangeStart', 
+      function(event, toState, toParams, fromState, fromParams){ 
+          console.log('Changed state to: ' + toState);
+          console.log(toState);
+      });
+    
+      if(!LoginService.isAuthenticated()) {
+        $state.transitionTo('login');
+      }
+  });
+
 angular.module('stockApp')
     .controller('MainCtrl', function($scope, $http) {
 
@@ -213,3 +226,36 @@ angular.module('stockApp').directive('datePicker', function() {
         link: link
     }
 });
+
+angular.module('stockApp').controller('LoginController', function($scope, $rootScope, $stateParams, $state, LoginService) {
+    $rootScope.title = "AngularJS Login Sample";
+    
+    $scope.formSubmit = function() {
+      if(LoginService.login($scope.username, $scope.password)) {
+        $scope.error = '';
+        $scope.username = '';
+        $scope.password = '';
+        $state.transitionTo('home');
+      } else {
+        $scope.error = "Incorrect username/password !";
+      }   
+    };
+    
+  });
+
+  angular.module('stockApp').factory('LoginService', function() {
+    var admin = 'admin';
+    var pass = 'admin123';
+    var isAuthenticated = false;
+    
+    return {
+      login : function(username, password) {
+        isAuthenticated = username === admin && password === pass;
+        return isAuthenticated;
+      },
+      isAuthenticated : function() {
+        return isAuthenticated;
+      }
+    };
+    
+  });
