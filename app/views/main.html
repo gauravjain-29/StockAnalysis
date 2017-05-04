@@ -1,9 +1,9 @@
 <div>
-<div class="fb-login-button" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="false"></div>
+    <div class="fb-login-button" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="false"></div>
     <div class="input-group">
         <input type="text" class="form-control" ng-model="scripCode" ng-change="dismissSearch=false">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="button" ng-click="getData()">Show History</button>
+          <!-- <button class="btn btn-default" type="button" ng-click="getData()">Show History</button> -->
           <button class="btn btn-default" type="button" ng-click="getTicker()">Generate Ticker</button>
         </span>
     </div>
@@ -15,6 +15,7 @@
             </tr>
         </table>
     </div>
+    <h3 ng-show="errorMessage" style="color: red">{{errorMessage}}</h3>
     <br />
     <div class="col-xs-3">
         <input data-ng-model="startDate" type="text" date-picker="startDate" class="form-control" placeholder="Start Date: YYYY-MM-DD">
@@ -24,24 +25,11 @@
     </div>
     <br />
     <br />
-    <div ng-show="history">
-        <h3 ng-show="errorMessage" style="color: red">{{errorMessage}}</h3>
-        <div id="chartContainer" style="width:100%;height:300px;"></div>
-        <br />
-        <table class="table table-striped table-bordered">
-            <tr>
-                <td ng-repeat="columnName in data.dataset.column_names">{{columnName}}</td>
-            </tr>
-            <tr ng-repeat="dayData in data.dataset.data">
-                <td ng-repeat="value in dayData track by $index">
-                    {{value}}
-                </td>
-            </tr>
-        </table>
-    </div>
     <br />
     <label ng-show="ticker">Recommendation
-    <br /><br /></label>
+        <br />
+        <br />
+    </label>
     <table ng-show="ticker" class="table table-striped table-bordered">
         <tr>
             <td>Entry</td>
@@ -56,10 +44,30 @@
             <td>{{pointers.stopLoss}}</td>
         </tr>
     </table>
-    <br /><br />
-    <label ng-show="ticker">History
-    <br /><br /></label>
+    <br />
+    <br />
     <div ng-show="ticker">
+        <div id="chartContainer" style="width:100%;height:300px;"></div>
+        <br />
+        <!-- <table class="table table-striped table-bordered">
+            <tr>
+                <td ng-repeat="columnName in data.dataset.column_names">{{columnName}}</td>
+            </tr>
+            <tr ng-repeat="dayData in data.dataset.data">
+                <td ng-repeat="value in dayData track by $index">
+                    {{value}}
+                </td>
+            </tr>
+        </table> -->
+    </div>
+    <br />
+    <label ng-show="ticker" data-toggle="collapse" data-target="#HistoryTable" ng-click="isCollapsed=!isCollapsed">History
+        <i class="fa fa-plus-square-o" aria-hidden="true" ng-show="isCollapsed"></i>
+        <i class="fa fa-minus-square-o" aria-hidden="true" ng-show="!isCollapsed"></i>
+        <br />
+        <br />
+    </label>
+    <div ng-show="ticker" id="HistoryTable" class="collapse">
         <table class="table table-striped table-bordered">
             <tr>
                 <td> Date </td>
