@@ -17,7 +17,9 @@ var module = angular.module('stockApp', [
      'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.router'
+    'ui.router',
+    'angular-storage',
+    'angular-jwt'
   ]);
   // module.config(function ($routeProvider) {
   //   $routeProvider
@@ -36,13 +38,13 @@ var module = angular.module('stockApp', [
   //     });
   // });
 
-  module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+  module.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
-    
+
     $stateProvider
       .state('login', {
         url : '/login',
-        templateUrl : 'login.html',
+        templateUrl : 'views/login.html',
         controller : 'LoginController'
       })
       .state('home', {
@@ -50,4 +52,4 @@ var module = angular.module('stockApp', [
         templateUrl : 'views/main.html',
         controller : 'MainCtrl'
       });
-  }]);
+  });

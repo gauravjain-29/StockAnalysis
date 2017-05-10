@@ -8,20 +8,20 @@
  * Controller of the stockApp
  */
 
-angular.module('stockApp').run(function($rootScope, $location, $state, LoginService) {
+angular.module('stockApp').run(function($rootScope, $location, $state) {
     $rootScope.$on('$stateChangeStart',
         function(event, toState, toParams, fromState, fromParams) {
             console.log('Changed state to: ' + toState);
             console.log(toState);
         });
 
-    if (!LoginService.isAuthenticated()) {
-        $state.transitionTo('login');
-    }
+    // if (!LoginService.isAuthenticated()) {
+    //     $state.transitionTo('login');
+    // }
 });
 
 angular.module('stockApp')
-    .controller('MainCtrl', function($scope, $http) {
+    .controller('MainCtrl', function($scope, $http, $cookies, jwtHelper, $state) {
 
         // $http({
         //     method: 'GET',
@@ -56,11 +56,21 @@ angular.module('stockApp')
             $.unblockUI();
         }
 
-        $scope.blockUICall();
         $scope.isCollapsed = true;
+        $scope.jwtToken = $cookies.get('jwtOAuthToken');
+        
+        if($scope.jwtToken == undefined || jwtHelper.isTokenExpired($scope.jwtToken))
+        {
+            $state.transitionTo('login');
+            return;
+        }
+        $scope.blockUICall();
+
         $http({
             method: 'GET',
-            url: 'https://django-backend.herokuapp.com/stocks/'
+            url: 'https://django-qa.herokuapp.com/stocks/',
+            headers:{Authorization: 'JWT ' + $scope.jwtToken}
+
         }).then(function successCallback(response) {
             var rawData = response;
             for (var i in rawData.data) {
@@ -69,6 +79,8 @@ angular.module('stockApp')
             $scope.nseCodesArray = rawData;
             $scope.unblockUICall();
         }, function errorCallback(response) {
+            $state.transitionTo('login');
+            $scope.unblockUICall();
             // called asynchronously if an error occurs
             // or server returns response with an error status.
         });
@@ -181,6 +193,11 @@ angular.module('stockApp')
                 $scope.endDate = todaysDate;
             }
 
+            if(jwtHelper.isTokenExpired($scope.jwtToken))
+            {
+                $state.transitionTo('login');
+            }
+
             $scope.blockUICall();
             var postdata = {}
             postdata.ticker = $scope.scripCode;
@@ -191,10 +208,11 @@ angular.module('stockApp')
                 postdata.end_date = $scope.endDate;
             }
             $.ajax({
-                url: ('https://django-backend.herokuapp.com/stock/'),
+                url: ('https://django-qa.herokuapp.com/stock/'),
                 dataType: 'json',
                 type: 'post',
                 data: postdata,
+                headers:{Authorization: 'JWT ' + $scope.jwtToken},
                 success: function(response) {
                     console.log(response);
                     $scope.draw(response);
@@ -207,6 +225,7 @@ angular.module('stockApp')
                     //if (response.status == 404) {
                         $scope.errorMessage = response.responseText;
                     //}
+                    $state.transitionTo('login');
                     $scope.$digest();
                     $scope.unblockUICall();
                 }
@@ -215,10 +234,11 @@ angular.module('stockApp')
             var tickerPostData = {}
             tickerPostData.ticker = $scope.scripCode;
             $.ajax({
-                url: ('https://django-backend.herokuapp.com/pointers/'),
+                url: ('https://django-qa.herokuapp.com/pointers/'),
                 dataType: 'json',
                 type: 'post',
                 data: tickerPostData,
+                headers:{Authorization: 'JWT ' + $scope.jwtToken},
                 success: function(response) {
                     $scope.pointers = response;
                     $scope.$digest();
@@ -230,6 +250,7 @@ angular.module('stockApp')
                     //if (response.status == 404) {
                         $scope.errorMessage = response.responseText;
                     //}
+                    $state.transitionTo('login');
                     $scope.$digest();
                     $scope.unblockUICall();
                 }
@@ -263,34 +284,116 @@ angular.module('stockApp').directive('datePicker', function() {
     }
 });
 
-angular.module('stockApp').controller('LoginController', function($scope, $rootScope, $stateParams, $state, LoginService) {
+angular.module('stockApp').controller('LoginController', function($scope, $rootScope, $stateParams, $state, $http, $cookies) {
 
-    $scope.formSubmit = function() {
-        if (LoginService.login($scope.username, $scope.password)) {
-            $scope.error = '';
-            $scope.username = '';
-            $scope.password = '';
+    // $scope.formSubmit = function() {
+    //     if (LoginService.login($scope.username, $scope.password)) {
+    //         $scope.error = '';
+    //         $scope.username = '';
+    //         $scope.password = '';
+    //         $state.transitionTo('home');
+    //     } else {
+    //         $scope.error = "Incorrect username/password !";
+    //     }
+    // };
+    $scope.blockUICall = function() {
+            $.blockUI({
+                css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#000',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                }
+            });
+        }
+
+        $scope.unblockUICall = function() {
+            $.unblockUI();
+        }
+
+
+    $scope.login = function(){
+        $http({
+            method: 'POST',
+            url: 'https://django-qa.herokuapp.com/api-token-auth/',
+            data: {username:$scope.username, password:$scope.password}
+        }).then(function successCallback(response) {
+            console.log(response);
+            $scope.logged = true;
+            $scope.jwt = response.data.token;
+            $cookies.put('jwtOAuthToken', $scope.jwt);
+            //store.set('token', response.token);
             $state.transitionTo('home');
-        } else {
+        }, function errorCallback(response) {
+            $scope.logged = false;
             $scope.error = "Incorrect username/password !";
-        }
-    };
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+    }
+
+    $scope.register = function(){
+        $scope.blockUICall();
+        $http({
+            method: 'POST',
+            url: 'https://django-qa.herokuapp.com/createUser/',
+            data: {username:$scope.reg_username, password:$scope.reg_password, email:$scope.reg_emailId}
+        }).then(function successCallback(response) {
+            $scope.reg_message = 'Registration successful. Please continue to login.';
+            $scope.unblockUICall();
+        }, function errorCallback(response) {
+            $scope.reg_message = 'Username already taken.';
+            $scope.unblockUICall();
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+    }
 
 });
 
-angular.module('stockApp').factory('LoginService', function() {
-    var admin = 'admin';
-    var pass = 'admin123';
-    var isAuthenticated = false;
+// angular.module('stockApp').factory('LoginService', function($http) {
+//     var admin = 'admin';
+//     var pass = 'admin123';
+//     var isAuthenticated = false;
 
-    return {
-        login: function(username, password) {
-            isAuthenticated = username === admin && password === pass;
-            return isAuthenticated;
-        },
-        isAuthenticated: function() {
-            return isAuthenticated;
-        }
-    };
+//   //   function login(username, password)
+//   //   {
+//   //       var loginURL = $scope.serverURL + 'api-token-auth/';
+//   //       $http.post(
+//   //       loginURL,
+//   //       {'username': $scope.username, 'password': $scope.password})
+//   //         .success(function(response) {
+//   //             $scope.logged = true;
+//   //             $scope.jwt = response.token;
+//   //             store.set('token', response.token);
+//   //         }).error(function(response, status) {
+//   //             $scope.logged = false;
+//   // });
+//   //   }
+//     return {
+//         login: function(username, password) {
+//             var loginURL = 'https://django-qa.herokuapp.com/api-token-auth/';
+//             $http.post(
+//                     loginURL, { 'username': username, 'password': password })
+//                 .success(function(response) {
+//                     console.log(response);
+//                     // $scope.logged = true;
+//                     // $scope.jwt = response.token;
+//                     // store.set('token', response.token);
+//                 }).error(function(response, status) {
+//                     console.log(response);
+//                     //$scope.logged = false;
+//                 });
 
-});
+//             // isAuthenticated = username === admin && password === pass;
+//             // return isAuthenticated;
+//         },
+//         isAuthenticated: function() {
+//             return isAuthenticated;
+//         }
+//     };
+
+// });
