@@ -18,7 +18,6 @@ var module = angular.module('stockApp', [
     'ngSanitize',
     'ngTouch',
     'ui.router',
-    'angular-storage',
     'angular-jwt'
   ]);
   // module.config(function ($routeProvider) {
