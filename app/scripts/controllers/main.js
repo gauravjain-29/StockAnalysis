@@ -73,9 +73,9 @@ angular.module('stockApp')
 
         }).then(function successCallback(response) {
             var rawData = response;
-            for (var i in rawData.data) {
-                rawData.data[i][0] = rawData.data[i][0];
-            }
+            // for (var i in rawData.data) {
+            //     rawData.data[i][0] = rawData.data[i][0];
+            // }
             $scope.nseCodesArray = rawData;
             $scope.unblockUICall();
         }, function errorCallback(response) {
@@ -172,6 +172,9 @@ angular.module('stockApp')
         }
 
         $scope.getTicker = function() {
+
+            
+
             $scope.history = false;
             $scope.ticker = true;
             //$scope.data = '';
@@ -179,6 +182,15 @@ angular.module('stockApp')
             $scope.errorMessage = '';
             $scope.dismissSearch = true;
             //$scope.blockUICall();
+            for (var i = 0; i < $scope.nseCodesArray.data.length; i++) {
+                if($scope.scripCode == $scope.nseCodesArray.data[i].Code)
+                    break;
+                if(i == $scope.nseCodesArray.data.length - 1)
+                {
+                    $scope.errorMessage = 'Invalid Scrip Code';
+                    return;
+                }
+            }
 
             var currentDate = new Date();
             var day = currentDate.getDate();

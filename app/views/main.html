@@ -4,7 +4,7 @@
         <input type="text" class="form-control" ng-model="scripCode" ng-change="dismissSearch=false">
         <span class="input-group-btn">
           <!-- <button class="btn btn-default" type="button" ng-click="getData()">Show History</button> -->
-          <button class="btn btn-default" type="button" ng-click="getTicker()">Generate Ticker</button>
+          <button class="btn btn-default" type="button" ng-click="getTicker()" ng-disabled="!scripCode">Generate Ticker</button>
         </span>
     </div>
     <div>
