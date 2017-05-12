@@ -236,7 +236,9 @@ angular.module('stockApp')
                     console.log(response);
                     $scope.errorCode = response.status;
                     //if (response.status == 404) {
-                        $scope.errorMessage = response.responseText;
+                        //$scope.errorMessage = response.responseText;
+                        $scope.errorMessage = "An error occured";
+                        console.log(response.responseText);
                     //}
                     //$state.transitionTo('login');
                     $scope.$digest();
@@ -261,7 +263,9 @@ angular.module('stockApp')
                     console.log(response);
                     $scope.errorCode = response.status;
                     //if (response.status == 404) {
-                        $scope.errorMessage = response.responseText;
+                        //$scope.errorMessage = response.responseText;
+                        $scope.errorMessage = "An error occured";
+                        console.log(response.responseText);
                     //}
                     //$state.transitionTo('login');
                     $scope.$digest();
