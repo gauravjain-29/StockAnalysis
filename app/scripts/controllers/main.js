@@ -221,7 +221,7 @@ angular.module('stockApp')
             }
             $.ajax({
                 url: ('https://django-prod.herokuapp.com/stock/'),
-                dataType: 'json'
+                dataType: 'json',
                 type: 'post',
                 data: postdata,
                 headers:{Authorization: 'JWT ' + $scope.jwtToken},
