@@ -208,6 +208,7 @@ angular.module('stockApp')
             if(jwtHelper.isTokenExpired($scope.jwtToken))
             {
                 $state.transitionTo('login');
+                return;
             }
 
             $scope.blockUICall();
