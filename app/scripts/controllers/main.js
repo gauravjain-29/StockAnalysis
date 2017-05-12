@@ -237,7 +237,7 @@ angular.module('stockApp')
                     //if (response.status == 404) {
                         $scope.errorMessage = response.responseText;
                     //}
-                    $state.transitionTo('login');
+                    //$state.transitionTo('login');
                     $scope.$digest();
                     $scope.unblockUICall();
                 }
@@ -262,7 +262,7 @@ angular.module('stockApp')
                     //if (response.status == 404) {
                         $scope.errorMessage = response.responseText;
                     //}
-                    $state.transitionTo('login');
+                    //$state.transitionTo('login');
                     $scope.$digest();
                     $scope.unblockUICall();
                 }
