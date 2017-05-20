@@ -23,7 +23,7 @@ angular.module('stockApp').run(function($rootScope, $location, $state) {
 angular.module('stockApp')
     .controller('MainCtrl', function($scope, $http, $cookies, jwtHelper, $state) {
 
-        var baseURL = 'https://django-qa.herokuapp.com/';
+        var baseURL = 'https://django-prod.herokuapp.com/';
         // $http({
         //     method: 'GET',
         //     url: '/data/NSE-datasets-codes.csv'
@@ -314,7 +314,7 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
     //         $scope.error = "Incorrect username/password !";
     //     }
     // };
-    var baseURL = 'https://django-qa.herokuapp.com/';
+    var baseURL = 'https://django-prod.herokuapp.com/';
     $scope.blockUICall = function() {
             $.blockUI({
                 css: {
