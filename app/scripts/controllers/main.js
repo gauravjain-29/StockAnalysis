@@ -23,6 +23,7 @@ angular.module('stockApp').run(function($rootScope, $location, $state) {
 angular.module('stockApp')
     .controller('MainCtrl', function($scope, $http, $cookies, jwtHelper, $state) {
 
+        var baseURL = 'https://django-qa.herokuapp.com/';
         // $http({
         //     method: 'GET',
         //     url: '/data/NSE-datasets-codes.csv'
@@ -68,7 +69,7 @@ angular.module('stockApp')
 
         $http({
             method: 'GET',
-            url: 'https://django-prod.herokuapp.com/stocks/',
+            url: baseURL+ 'stocks/',
             headers:{Authorization: 'JWT ' + $scope.jwtToken}
 
         }).then(function successCallback(response) {
@@ -221,7 +222,7 @@ angular.module('stockApp')
                 postdata.end_date = $scope.endDate;
             }
             $.ajax({
-                url: ('https://django-prod.herokuapp.com/stock/'),
+                url: (baseURL+'stock/'),
                 dataType: 'json',
                 type: 'post',
                 data: postdata,
@@ -249,7 +250,7 @@ angular.module('stockApp')
             var tickerPostData = {}
             tickerPostData.ticker = $scope.scripCode;
             $.ajax({
-                url: ('https://django-prod.herokuapp.com/pointers/'),
+                url: (baseURL+'pointers/'),
                 dataType: 'json',
                 type: 'post',
                 data: tickerPostData,
@@ -313,6 +314,7 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
     //         $scope.error = "Incorrect username/password !";
     //     }
     // };
+    var baseURL = 'https://django-qa.herokuapp.com/';
     $scope.blockUICall = function() {
             $.blockUI({
                 css: {
@@ -333,10 +335,11 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
 
 
     $scope.login = function(){
+        $scope.error = '';
         $scope.blockUICall();
         $http({
             method: 'POST',
-            url: 'https://django-prod.herokuapp.com/api-token-auth/',
+            url: baseURL + 'api-token-auth/',
             data: {username:$scope.username, password:$scope.password}
         }).then(function successCallback(response) {
             $scope.logged = true;
@@ -358,7 +361,7 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
         $scope.blockUICall();
         $http({
             method: 'POST',
-            url: 'https://django-prod.herokuapp.com/createUser/',
+            url: baseURL+ 'createUser/',
             data: {username:$scope.reg_username, password:$scope.reg_password, email:$scope.reg_emailId}
         }).then(function successCallback(response) {
             $scope.reg_message = 'Registration successful. Please continue to login.';
