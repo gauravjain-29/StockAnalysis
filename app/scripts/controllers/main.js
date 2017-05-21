@@ -244,6 +244,7 @@ angular.module('stockApp')
                     //$state.transitionTo('login');
                     $scope.$digest();
                     $scope.unblockUICall();
+                    
                 }
             });
 
