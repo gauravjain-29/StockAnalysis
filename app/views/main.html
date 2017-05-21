@@ -1,20 +1,146 @@
-<div class="header">
+<style type="text/css">
+html,
+body {
+    height: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.split-pane-divider {
+    background: #aaa;
+}
+
+#left-component {
+    width: 30em;
+}
+
+#my-divider {
+    left: 30em;
+    /* Same as left component width */
+    width: 0px;
+}
+
+#right-component {
+    left: 30em;
+    /* Same as left component width */
+    margin-left: 5px;
+    /* Same as divider width */
+}
+</style>
+<div class="split-pane fixed-left">
+    <div class="split-pane-component" id="left-component" style="position: fixed;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <div class="fb-login-button" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="false"></div>
+        <div class="input-group" style="top: 10px;">
+            <input type="text" class="form-control" ng-model="scripCode" ng-change="dismissSearch=false">
+            <span class="input-group-btn">
+          <button class="btn btn-default" type="button" ng-click="getTicker()" ng-disabled="!scripCode">Go</button>
+        </span>
+        </div>
+        <div style="margin-top: 10px;">
+            <table ng-show="scripCode && !dismissSearch" class="table table-striped table-bordered">
+                <tr ng-repeat="scrip in nseCodesArray.data | filter:scripCode" ng-click="setScrip(scrip.Code)">
+                    <td>{{scrip.Code}}</td>
+                    <td>{{scrip.Name}}</td>
+                </tr>
+            </table>
+        </div>
+        <h3 ng-show="errorMessage" style="color: red">{{errorMessage}}</h3>
+        <br />
+        <div class="col-xs-5">
+            <input data-ng-model="startDate" type="text" date-picker="startDate" class="form-control" placeholder="Start Date: YYYY-MM-DD">
+        </div>
+        <div class="col-xs-5">
+            <input data-ng-model="endDate" class="form-control" type="text" placeholder="End Date: YYYY-MM-DD" date-picker="endDate">
+        </div>
+    </div>
+    <div class="split-pane-divider" id="my-divider" style="position: fixed;"></div>
+    <div class="split-pane-component" id="right-component" style="position: fixed;">
         <div class="navbar navbar-default" role="navigation">
             <div class="container">
                 <div class="navbar-header">
-                    
-                    <a class="navbar-brand" href="#/">Stock Analysis</a>
+                    <!-- <a class="navbar-brand" href="#/">Stock Analysis</a> -->
+                    <img src="/images/coollogo_com-24470365.png" style="width: 40%;height: 40%" />
                 </div>
-                
+            </div>
+        </div>
+
+        <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <label ng-show="ticker">Recommendation
+            <br />
+            <br />
+        </label>
+        <table ng-show="ticker" class="table table-striped table-bordered">
+            <tr>
+                <td>Entry</td>
+                <td>{{pointers.entry}}</td>
+            </tr>
+            <tr>
+                <td>Target</td>
+                <td>{{pointers.target}}</td>
+            </tr>
+            <tr>
+                <td>Stoploss</td>
+                <td>{{pointers.stopLoss}}</td>
+            </tr>
+        </table>
+        </div>
+        <br />
+        <br />
+        <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <div ng-show="ticker">
+            <div id="chartContainer" style="width:100%;height:300px;"></div>
+            <br />
+        </div>
+        </div>
+        <br />
+        <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <label ng-show="ticker" data-toggle="collapse" data-target="#HistoryTable" ng-click="isCollapsed=!isCollapsed">History
+            <i class="fa fa-plus-square-o" aria-hidden="true" ng-show="isCollapsed"></i>
+            <i class="fa fa-minus-square-o" aria-hidden="true" ng-show="!isCollapsed"></i>
+            <br />
+            <br />
+        </label>
+        <div ng-show="ticker" id="HistoryTable" class="collapse">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <td> Date </td>
+                    <td> Open </td>
+                    <td> Low </td>
+                    <td> High </td>
+                    <td> Close </td>
+                    <td> Nature </td>
+                    <td> Color </td>
+                </tr>
+                <tr ng-repeat="dayData in tickerData">
+                    <td>{{dayData.Date}}</td>
+                    <td>{{dayData.Open}}</td>
+                    <td>{{dayData.Low}}</td>
+                    <td>{{dayData.High}}</td>
+                    <td>{{dayData.Close}}</td>
+                    <td style="text-transform: uppercase;">{{dayData.nature}}</td>
+                    <td ng-if="dayData.color == 'green'" style="background-color: green;text-transform: uppercase;">{{dayData.color}}</td>
+                    <td ng-if="dayData.color == 'red'" style="background-color: red;text-transform: uppercase;">{{dayData.color}}</td>
+                </tr>
+            </table>
+        </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="header">
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#/">Stock Analysis</a>
             </div>
         </div>
     </div>
+</div>
 <div>
     <div class="fb-login-button" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="false"></div>
     <div class="input-group">
         <input type="text" class="form-control" ng-model="scripCode" ng-change="dismissSearch=false">
         <span class="input-group-btn">
-          <!-- <button class="btn btn-default" type="button" ng-click="getData()">Show History</button> -->
           <button class="btn btn-default" type="button" ng-click="getTicker()" ng-disabled="!scripCode">Generate Ticker</button>
         </span>
     </div>
@@ -60,16 +186,6 @@
     <div ng-show="ticker">
         <div id="chartContainer" style="width:100%;height:300px;"></div>
         <br />
-        <!-- <table class="table table-striped table-bordered">
-            <tr>
-                <td ng-repeat="columnName in data.dataset.column_names">{{columnName}}</td>
-            </tr>
-            <tr ng-repeat="dayData in data.dataset.data">
-                <td ng-repeat="value in dayData track by $index">
-                    {{value}}
-                </td>
-            </tr>
-        </table> -->
     </div>
     <br />
     <label ng-show="ticker" data-toggle="collapse" data-target="#HistoryTable" ng-click="isCollapsed=!isCollapsed">History
@@ -102,3 +218,4 @@
         </table>
     </div>
 </div>
+ -->

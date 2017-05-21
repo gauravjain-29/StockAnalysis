@@ -257,6 +257,7 @@ angular.module('stockApp')
                 headers:{Authorization: 'JWT ' + $scope.jwtToken},
                 success: function(response) {
                     $scope.pointers = response;
+                    console.log($scope.pointers);
                     $scope.$digest();
                     $scope.unblockUICall();
                 },
