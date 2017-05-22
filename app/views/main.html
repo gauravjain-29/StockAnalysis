@@ -15,6 +15,7 @@
     height: 100%;
     position: absolute;
     color: black;
+    background: cornsilk;
 }
 
 #left_pane {
@@ -29,14 +30,23 @@
 #right_pane {
     width: 75%;
     right: 0;
-    background: white;
+    /*background: white;*/
     padding-left: 5px;
+}
+
+#chartContainerDiv.fullscreen {
+    width: 100%; 
+    height: 100%; 
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    z-index: 10;
 }
 </style>
 <div id="container">
     <div id="left_pane">
         <!-- <div class="fb-login-button" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="false"></div> -->
-        <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);height: 100%;">
+        <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);height: 100%;background: white;">
         <div class="input-group">
             <input type="text" class="form-control" ng-model="scripCode" ng-change="dismissSearch=false">
             <span class="input-group-btn">
@@ -70,9 +80,8 @@
                 </div>
             </div>
         </div>
-        <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background: white;">
             <label ng-show="ticker">Recommendation
-                <br />
                 <br />
             </label>
             <table ng-show="ticker" class="table table-striped table-bordered">
@@ -90,20 +99,19 @@
                 </tr>
             </table>
         </div>
-        <br />
-        <br />
-        <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background: white;" id="chartContainerDiv">
             <div ng-show="ticker">
+                <i ng-hide="expandedChart" class="fa fa-window-maximize" aria-hidden="true" style="cursor: pointer;" onclick="expandChartContainerDiv(this)" ng-click="expandedChart=true"></i>
+                <i ng-show="expandedChart" class="fa fa-window-minimize" aria-hidden="true" style="cursor: pointer;" onclick="expandChartContainerDiv(this)" ng-click="expandedChart=false"></i>
                 <div id="chartContainer" style="width:100%;height:300px;"></div>
                 <br />
             </div>
         </div>
         <br />
-        <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background: white;">
             <label ng-show="ticker" data-toggle="collapse" data-target="#HistoryTable" ng-click="isCollapsed=!isCollapsed">History
                 <i class="fa fa-plus-square-o" aria-hidden="true" ng-show="isCollapsed"></i>
                 <i class="fa fa-minus-square-o" aria-hidden="true" ng-show="!isCollapsed"></i>
-                <br />
                 <br />
             </label>
             <div ng-show="ticker" id="HistoryTable" class="collapse">

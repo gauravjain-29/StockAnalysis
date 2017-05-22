@@ -39,7 +39,6 @@
     <script>
     $(document).ready(function() {
         //$('div.split-pane').splitPane();
-        console.log('JQuery');
         $("#left_pane").resizable({
             handles: 'e',
             resize: function() {
@@ -47,6 +46,13 @@
             }
         });
     });
+
+    function expandChartContainerDiv(e)
+    {
+        var divId = $(e).parent().parent().attr("id");
+        console.log(divId);
+        $("#"+divId).toggleClass('fullscreen');
+    }
     </script>
 </body>
 
