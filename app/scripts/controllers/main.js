@@ -143,7 +143,8 @@ angular.module('stockApp')
         //     // });
         // }
 
-        $scope.draw = function(shareData) {
+        $scope.draw = function() {
+            var shareData = $scope.shareData;
             var formattedData = [];
             //var shareData = $scope.data.dataset.data;
             for (var item in shareData) {
@@ -228,8 +229,8 @@ angular.module('stockApp')
                 data: postdata,
                 headers:{Authorization: 'JWT ' + $scope.jwtToken},
                 success: function(response) {
-                    console.log(response);
-                    $scope.draw(response);
+                    $scope.shareData = response;
+                    $scope.draw();
                     $scope.tickerData = response.reverse();
                     $scope.$digest();
                 },
@@ -244,7 +245,7 @@ angular.module('stockApp')
                     //$state.transitionTo('login');
                     $scope.$digest();
                     $scope.unblockUICall();
-                    
+
                 }
             });
 

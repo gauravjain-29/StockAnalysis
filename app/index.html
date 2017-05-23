@@ -49,10 +49,25 @@
 
     function expandChartContainerDiv(e)
     {
+        var divId = $(e).parent().parent().parent().attr("id");
+        console.log(divId);
+        $("#"+divId).toggleClass('fullscreen');
+    }
+
+    function expandHistoryDiv(e)
+    {
         var divId = $(e).parent().parent().attr("id");
         console.log(divId);
         $("#"+divId).toggleClass('fullscreen');
     }
+
+    function expandPointersDiv(e)
+    {
+        var divId = $(e).parent().parent().attr("id");
+        console.log(divId);
+        $("#"+divId).toggleClass('fullscreen');
+    }
+
     </script>
 </body>
 
