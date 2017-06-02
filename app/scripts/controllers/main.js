@@ -338,6 +338,9 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
 
 
     $scope.login = function(){
+        console.log('here');
+        console.log($scope.username);
+        console.log($scope.password);
         $scope.error = '';
         $scope.blockUICall();
         $http({

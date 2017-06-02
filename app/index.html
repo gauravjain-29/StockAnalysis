@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="plugins/jquery-ui-1.12.1/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="plugins/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="bower_components/split-pane/split-pane.css" />
+    <link href="styles/login-register.css" rel="stylesheet" />
 </head>
 
 <body ng-app="stockApp">
@@ -36,37 +37,38 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/about.js"></script>
+    <script src="scripts/login-register.js" type="text/javascript"></script>
     <script>
-    $(document).ready(function() {
-        //$('div.split-pane').splitPane();
-        $("#left_pane").resizable({
-            handles: 'e',
-            resize: function() {
-                $("#right_pane").outerWidth($("#container").innerWidth() - $("#left_pane").outerWidth());
-            }
-        });
-    });
+    // $(document).ready(function() {
+    //     //$('div.split-pane').splitPane();
+    //     $("#left_pane").resizable({
+    //         handles: 'e',
+    //         resize: function() {
+    //             $("#right_pane").outerWidth($("#container").innerWidth() - $("#left_pane").outerWidth());
+    //         }
+    //     });
+    // });
 
-    function expandChartContainerDiv(e)
-    {
-        var divId = $(e).parent().parent().parent().attr("id");
-        console.log(divId);
-        $("#"+divId).toggleClass('fullscreen');
-    }
+    // function expandChartContainerDiv(e)
+    // {
+    //     var divId = $(e).parent().parent().parent().attr("id");
+    //     console.log(divId);
+    //     $("#"+divId).toggleClass('fullscreen');
+    // }
 
-    function expandHistoryDiv(e)
-    {
-        var divId = $(e).parent().parent().attr("id");
-        console.log(divId);
-        $("#"+divId).toggleClass('fullscreen');
-    }
+    // function expandHistoryDiv(e)
+    // {
+    //     var divId = $(e).parent().parent().attr("id");
+    //     console.log(divId);
+    //     $("#"+divId).toggleClass('fullscreen');
+    // }
 
-    function expandPointersDiv(e)
-    {
-        var divId = $(e).parent().parent().attr("id");
-        console.log(divId);
-        $("#"+divId).toggleClass('fullscreen');
-    }
+    // function expandPointersDiv(e)
+    // {
+    //     var divId = $(e).parent().parent().attr("id");
+    //     console.log(divId);
+    //     $("#"+divId).toggleClass('fullscreen');
+    // }
 
     </script>
 </body>

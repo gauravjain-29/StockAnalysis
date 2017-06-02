@@ -46,9 +46,14 @@ var module = angular.module('stockApp', [
         templateUrl : 'views/login.html',
         controller : 'LoginController'
       })
+      // .state('home', {
+      //   url : '/home',
+      //   templateUrl : 'views/main.html',
+      //   controller : 'MainCtrl'
+      // });
       .state('home', {
         url : '/home',
-        templateUrl : 'views/main.html',
+        templateUrl : 'views/dashboard.html',
         controller : 'MainCtrl'
       });
   });
