@@ -59,9 +59,8 @@ angular.module('stockApp')
 
         $scope.isCollapsed = true;
         $scope.jwtToken = $cookies.get('jwtOAuthToken');
-        
-        if($scope.jwtToken == undefined || jwtHelper.isTokenExpired($scope.jwtToken))
-        {
+
+        if ($scope.jwtToken == undefined || jwtHelper.isTokenExpired($scope.jwtToken)) {
             $state.transitionTo('login');
             return;
         }
@@ -69,8 +68,8 @@ angular.module('stockApp')
 
         $http({
             method: 'GET',
-            url: baseURL+ 'stocks/',
-            headers:{Authorization: 'JWT ' + $scope.jwtToken}
+            url: baseURL + 'stocks/',
+            headers: { Authorization: 'JWT ' + $scope.jwtToken }
 
         }).then(function successCallback(response) {
             var rawData = response;
@@ -146,36 +145,75 @@ angular.module('stockApp')
         $scope.draw = function() {
             var shareData = $scope.shareData;
             var formattedData = [];
-            //var shareData = $scope.data.dataset.data;
+            // //var shareData = $scope.data.dataset.data;
             for (var item in shareData) {
                 var itemData = shareData[item];
-                var itemObj = { x: new Date(itemData.Date), y: [itemData.Open, itemData.High, itemData.Low, itemData.Close] };
-                formattedData.push(itemObj);
+                //var itemObj = { x: new Date(itemData.Date), y: [itemData.Open, itemData.High, itemData.Low, itemData.Close] };
+                var itemArray = [new Date(itemData.Date).getTime() + 5.5 * 3600 * 1000, itemData.Open, itemData.High, itemData.Low, itemData.Close];
+
+                formattedData.push(itemArray);
             }
 
-            var chart = new CanvasJS.Chart("chartContainer", {
+            // var chart = new CanvasJS.Chart("chartContainer", {
+            //     title: {
+            //         text: "Candlestick Chart",
+            //     },
+            //     exportEnabled: true,
+            //     axisY: {
+            //         includeZero: false,
+            //         prefix: "₹",
+            //     },
+            //     axisX: {
+            //         valueFormatString: "DD-MMM",
+            //     },
+            //     data: [{
+            //         type: "candlestick",
+            //         dataPoints: formattedData
+            //     }]
+            // });
+            // chart.render();
+
+
+            // $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?a=e&filename=aapl-ohlc.json&callback=?', function (data) {
+            //console.log(data);
+
+            // create the chart
+            Highcharts.stockChart('chartContainer', {
+
+
+                rangeSelector: {
+                    selected: 1
+                },
+
                 title: {
-                    text: "Candlestick Chart",
+                    text: $scope.scripName
                 },
-                exportEnabled: true,
-                axisY: {
-                    includeZero: false,
-                    prefix: "₹",
-                },
-                axisX: {
-                    valueFormatString: "DD-MMM",
-                },
-                data: [{
-                    type: "candlestick",
-                    dataPoints: formattedData
+
+                series: [{
+                    type: 'candlestick',
+                    name: $scope.scripName,
+                    data: formattedData,
+                    dataGrouping: {
+                        units: [
+                            [
+                                'week', // unit name
+                                [1] // allowed multiples
+                            ],
+                            [
+                                'month', [1, 2, 3, 4, 6]
+                            ]
+                        ]
+                    }
                 }]
             });
-            chart.render();
+            // });
+
+
         }
 
         $scope.getTicker = function() {
 
-            
+
 
             $scope.history = false;
             $scope.ticker = true;
@@ -185,10 +223,12 @@ angular.module('stockApp')
             $scope.dismissSearch = true;
             //$scope.blockUICall();
             for (var i = 0; i < $scope.nseCodesArray.data.length; i++) {
-                if($scope.scripCode == $scope.nseCodesArray.data[i].Code)
-                    break;
-                if(i == $scope.nseCodesArray.data.length - 1)
+                if ($scope.scripCode == $scope.nseCodesArray.data[i].Code)
                 {
+                    $scope.scripName = $scope.nseCodesArray.data[i].Name;
+                    break;
+                }
+                if (i == $scope.nseCodesArray.data.length - 1) {
                     $scope.errorMessage = 'Invalid Scrip Code';
                     return;
                 }
@@ -199,16 +239,14 @@ angular.module('stockApp')
             var month = currentDate.getMonth() + 1;
             var year = currentDate.getFullYear();
 
-            var todaysDate = year+'-'+month+'-'+day;
-            var previousYearDate = (year-1)+'-'+month+'-'+day;
-            if(!$scope.startDate && !$scope.endDate)
-            {
+            var todaysDate = year + '-' + month + '-' + day;
+            var previousYearDate = (year - 1) + '-' + month + '-' + day;
+            if (!$scope.startDate && !$scope.endDate) {
                 $scope.startDate = previousYearDate;
                 $scope.endDate = todaysDate;
             }
 
-            if(jwtHelper.isTokenExpired($scope.jwtToken))
-            {
+            if (jwtHelper.isTokenExpired($scope.jwtToken)) {
                 $state.transitionTo('login');
                 return;
             }
@@ -223,13 +261,14 @@ angular.module('stockApp')
                 postdata.end_date = $scope.endDate;
             }
             $.ajax({
-                url: (baseURL+'stock/'),
+                url: (baseURL + 'stock/'),
                 dataType: 'json',
                 type: 'post',
                 data: postdata,
-                headers:{Authorization: 'JWT ' + $scope.jwtToken},
+                headers: { Authorization: 'JWT ' + $scope.jwtToken },
                 success: function(response) {
                     $scope.shareData = response;
+                    console.log(response);
                     $scope.draw();
                     $scope.tickerData = response.reverse();
                     $scope.$digest();
@@ -238,9 +277,9 @@ angular.module('stockApp')
                     console.log(response);
                     $scope.errorCode = response.status;
                     //if (response.status == 404) {
-                        //$scope.errorMessage = response.responseText;
-                        $scope.errorMessage = "An error occured";
-                        console.log(response.responseText);
+                    //$scope.errorMessage = response.responseText;
+                    $scope.errorMessage = "An error occured";
+                    console.log(response.responseText);
                     //}
                     //$state.transitionTo('login');
                     $scope.$digest();
@@ -252,11 +291,11 @@ angular.module('stockApp')
             var tickerPostData = {}
             tickerPostData.ticker = $scope.scripCode;
             $.ajax({
-                url: (baseURL+'pointers/'),
+                url: (baseURL + 'pointers/'),
                 dataType: 'json',
                 type: 'post',
                 data: tickerPostData,
-                headers:{Authorization: 'JWT ' + $scope.jwtToken},
+                headers: { Authorization: 'JWT ' + $scope.jwtToken },
                 success: function(response) {
                     $scope.pointers = response;
                     console.log($scope.pointers);
@@ -267,9 +306,9 @@ angular.module('stockApp')
                     console.log(response);
                     $scope.errorCode = response.status;
                     //if (response.status == 404) {
-                        //$scope.errorMessage = response.responseText;
-                        $scope.errorMessage = "An error occured";
-                        console.log(response.responseText);
+                    //$scope.errorMessage = response.responseText;
+                    $scope.errorMessage = "An error occured";
+                    console.log(response.responseText);
                     //}
                     //$state.transitionTo('login');
                     $scope.$digest();
@@ -319,25 +358,25 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
     // };
     var baseURL = 'https://django-qa.herokuapp.com/';
     $scope.blockUICall = function() {
-            $.blockUI({
-                css: {
-                    border: 'none',
-                    padding: '15px',
-                    backgroundColor: '#000',
-                    '-webkit-border-radius': '10px',
-                    '-moz-border-radius': '10px',
-                    opacity: .5,
-                    color: '#fff'
-                }
-            });
-        }
+        $.blockUI({
+            css: {
+                border: 'none',
+                padding: '15px',
+                backgroundColor: '#000',
+                '-webkit-border-radius': '10px',
+                '-moz-border-radius': '10px',
+                opacity: .5,
+                color: '#fff'
+            }
+        });
+    }
 
-        $scope.unblockUICall = function() {
-            $.unblockUI();
-        }
+    $scope.unblockUICall = function() {
+        $.unblockUI();
+    }
 
 
-    $scope.login = function(){
+    $scope.login = function() {
         console.log('here');
         console.log($scope.username);
         console.log($scope.password);
@@ -346,7 +385,7 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
         $http({
             method: 'POST',
             url: baseURL + 'api-token-auth/',
-            data: {username:$scope.username, password:$scope.password}
+            data: { username: $scope.username, password: $scope.password }
         }).then(function successCallback(response) {
             $scope.logged = true;
             $scope.jwt = response.data.token;
@@ -363,12 +402,12 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
         });
     }
 
-    $scope.register = function(){
+    $scope.register = function() {
         $scope.blockUICall();
         $http({
             method: 'POST',
-            url: baseURL+ 'createUser/',
-            data: {username:$scope.reg_username, password:$scope.reg_password, email:$scope.reg_emailId}
+            url: baseURL + 'createUser/',
+            data: { username: $scope.reg_username, password: $scope.reg_password, email: $scope.reg_emailId }
         }).then(function successCallback(response) {
             $scope.reg_message = 'Registration successful. Please continue to login.';
             $scope.unblockUICall();
