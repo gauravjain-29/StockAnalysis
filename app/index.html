@@ -17,6 +17,16 @@
     
     <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
     <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png">
+
+    <!-- Animation library for notifications   -->
+    <link href="assets/css/animate.min.css" rel="stylesheet" />
+    <!--  Paper Dashboard core CSS    -->
+    <link href="assets/css/paper-dashboard.css" rel="stylesheet" />
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="assets/css/demo.css" rel="stylesheet" />
+    <!--  Fonts and icons     -->
+    <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+    <link href="assets/css/themify-icons.css" rel="stylesheet">
     
 </head>
 
@@ -42,9 +52,35 @@
     <script type="text/javascript" src="scripts/libraries/jquery.blockUI.min.js"></script>
     <script src="scripts/libraries/angular-jwt.min.js"></script>
 
+    <script src="assets/js/bootstrap-checkbox-radio.js"></script>
+    <script src="assets/js/bootstrap-notify.js"></script>
+    <script src="assets/js/demo.js"></script>
+    <script src="assets/js/paper-dashboard.js"></script>
+
+
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/about.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            // demo.initChartist();
+
+            $.notify({
+                icon: 'ti-gift',
+                message: "Welcome to Infinv."
+
+            }, {
+                type: 'success',
+                timer: 4000,
+                placement: {
+                        from: 'top',
+                        align: 'center'
+                    }
+            });
+
+        });
+    </script>
 </body>
 
 </html>

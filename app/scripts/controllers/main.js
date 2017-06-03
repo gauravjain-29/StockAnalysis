@@ -218,18 +218,26 @@ angular.module('stockApp')
             $scope.history = false;
             $scope.ticker = true;
             //$scope.data = '';
-            $scope.errorCode = '';
-            $scope.errorMessage = '';
+            //$scope.errorCode = '';
+            //$scope.errorMessage = '';
             $scope.dismissSearch = true;
             //$scope.blockUICall();
             for (var i = 0; i < $scope.nseCodesArray.data.length; i++) {
-                if ($scope.scripCode == $scope.nseCodesArray.data[i].Code)
-                {
+                if ($scope.scripCode == $scope.nseCodesArray.data[i].Code) {
                     $scope.scripName = $scope.nseCodesArray.data[i].Name;
                     break;
                 }
                 if (i == $scope.nseCodesArray.data.length - 1) {
-                    $scope.errorMessage = 'Invalid Scrip Code';
+                    //$scope.errorMessage = 'Invalid Scrip Code';
+                    $.notify({
+                        icon: 'ti-face-sad',
+                        message: "Invalid Scrip Code."
+
+                    }, {
+                        type: 'danger',
+                        timer: 4000
+                    });
+
                     return;
                 }
             }
@@ -275,10 +283,18 @@ angular.module('stockApp')
                 },
                 error: function(response) {
                     console.log(response);
-                    $scope.errorCode = response.status;
+                    //$scope.errorCode = response.status;
                     //if (response.status == 404) {
                     //$scope.errorMessage = response.responseText;
-                    $scope.errorMessage = "An error occured";
+                    //$scope.errorMessage = "An error occured";
+                    $.notify({
+                        icon: 'ti-face-sad',
+                        message: "An Error Occured. This may not be a valid stock."
+
+                    }, {
+                        type: 'danger',
+                        timer: 4000
+                    });
                     console.log(response.responseText);
                     //}
                     //$state.transitionTo('login');
@@ -304,10 +320,18 @@ angular.module('stockApp')
                 },
                 error: function(response) {
                     console.log(response);
-                    $scope.errorCode = response.status;
+                    //$scope.errorCode = response.status;
                     //if (response.status == 404) {
                     //$scope.errorMessage = response.responseText;
-                    $scope.errorMessage = "An error occured";
+                    //$scope.errorMessage = "An error occured";
+                    $.notify({
+                        icon: 'ti-face-sad',
+                        message: "Unable to fetch pointers."
+
+                    }, {
+                        type: 'danger',
+                        timer: 4000
+                    });
                     console.log(response.responseText);
                     //}
                     //$state.transitionTo('login');
@@ -359,6 +383,7 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
     var baseURL = 'https://django-qa.herokuapp.com/';
     $scope.blockUICall = function() {
         $.blockUI({
+            message: 'Verifying Credentials.',
             css: {
                 border: 'none',
                 padding: '15px',
@@ -367,6 +392,7 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
                 '-moz-border-radius': '10px',
                 opacity: .5,
                 color: '#fff'
+
             }
         });
     }
@@ -377,9 +403,6 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
 
 
     $scope.login = function() {
-        console.log('here');
-        console.log($scope.username);
-        console.log($scope.password);
         $scope.error = '';
         $scope.blockUICall();
         $http({
@@ -395,7 +418,19 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
             $state.transitionTo('home');
         }, function errorCallback(response) {
             $scope.logged = false;
-            $scope.error = "Incorrect username/password !";
+            //$scope.error = "Incorrect username/password !";
+            $.notify({
+                icon: 'ti-lock',
+                message: "Invalid Username/Password."
+
+            }, {
+                type: 'danger',
+                timer: 4000,
+                placement: {
+                    from: 'top',
+                    align: 'center'
+                }
+            });
             $scope.unblockUICall();
             // called asynchronously if an error occurs
             // or server returns response with an error status.
