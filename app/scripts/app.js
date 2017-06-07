@@ -57,7 +57,8 @@ var module = angular.module('stockApp', [
         controller : 'MainCtrl'
       })
       .state('activateUser', {
-        url: '/activateUser',
-        templateUrl : 'views/userActivation.html'
+        url: '/activateUser/',
+        templateUrl : 'views/userActivation.html',
+        controller: 'activateUserCtrl'
       });
   });
