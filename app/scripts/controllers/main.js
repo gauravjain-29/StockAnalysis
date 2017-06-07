@@ -85,13 +85,37 @@ angular.module('stockApp')
             // or server returns response with an error status.
         });
 
+        $http({
+            method: 'GET',
+            url: baseURL + 'me/',
+            headers: { Authorization: 'JWT ' + $scope.jwtToken }
 
+        }).then(function successCallback(response) {
+            $scope.userDetails = response.data;
+            console.log(response);
+            $.notify({
+                icon: 'ti-user',
+                message: "Welcome " + $scope.userDetails.username
 
-        this.awesomeThings = [
-            'HTML5 Boilerplate',
-            'AngularJS',
-            'Karma'
-        ];
+            }, {
+                type: 'success',
+                timer: 4000,
+                placement: {
+                    from: 'top',
+                    align: 'center'
+                }
+            });
+        }, function errorCallback(response) {
+            $scope.unblockUICall();
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+
+        // this.awesomeThings = [
+        //     'HTML5 Boilerplate',
+        //     'AngularJS',
+        //     'Karma'
+        // ];
 
         $scope.scripCode = '';
         // $scope.getData = function(shareData) {
@@ -141,6 +165,11 @@ angular.module('stockApp')
         //     //     }
         //     // });
         // }
+
+        $scope.logout = function() {
+            $cookies.remove('jwtOAuthToken');
+            $state.transitionTo('login');
+        }
 
         $scope.draw = function() {
             var shareData = $scope.shareData;
@@ -368,7 +397,7 @@ angular.module('stockApp').directive('datePicker', function() {
     }
 });
 
-angular.module('stockApp').controller('LoginController', function($scope, $rootScope, $stateParams, $state, $http, $cookies) {
+angular.module('stockApp').controller('LoginController', function($scope, $rootScope, $stateParams, $state, $http, $cookies, jwtHelper) {
 
     // $scope.formSubmit = function() {
     //     if (LoginService.login($scope.username, $scope.password)) {
@@ -380,10 +409,29 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
     //         $scope.error = "Incorrect username/password !";
     //     }
     // };
+    var jwtToken = $cookies.get('jwtOAuthToken');
+    if (jwtToken != undefined && !jwtHelper.isTokenExpired(jwtToken)) {
+        $state.transitionTo('home');
+        return;
+    }
+
+    $.notify({
+        icon: 'ti-gift',
+        message: "Welcome to Infinv."
+
+    }, {
+        type: 'success',
+        timer: 4000,
+        placement: {
+            from: 'top',
+            align: 'center'
+        }
+    });
+
     var baseURL = 'https://django-qa.herokuapp.com/';
-    $scope.blockUICall = function() {
+    $scope.blockUICall = function(message) {
         $.blockUI({
-            message: 'Verifying Credentials.',
+            message: message,
             css: {
                 border: 'none',
                 padding: '15px',
@@ -404,10 +452,10 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
 
     $scope.login = function() {
         $scope.error = '';
-        $scope.blockUICall();
+        $scope.blockUICall('Validating Credentials');
         $http({
             method: 'POST',
-            url: baseURL + 'api-token-auth/',
+            url: baseURL + 'auth/login/',
             data: { username: $scope.username, password: $scope.password }
         }).then(function successCallback(response) {
             $scope.logged = true;
@@ -438,16 +486,40 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
     }
 
     $scope.register = function() {
-        $scope.blockUICall();
+        $scope.blockUICall('Registration in progress.');
         $http({
             method: 'POST',
-            url: baseURL + 'createUser/',
-            data: { username: $scope.reg_username, password: $scope.reg_password, email: $scope.reg_emailId }
+            url: baseURL + 'register/',
+            data: { username: $scope.reg_username, password: $scope.reg_password, email: $scope.reg_email }
         }).then(function successCallback(response) {
-            $scope.reg_message = 'Registration successful. Please continue to login.';
+            //$scope.reg_message = 'Registration successful. Please continue to login.';
+            $.notify({
+                icon: 'ti-check',
+                message: "Registration Successful. An email has been sent with Activation link."
+
+            }, {
+                type: 'success',
+                timer: 4000,
+                placement: {
+                    from: 'top',
+                    align: 'center'
+                }
+            });
             $scope.unblockUICall();
         }, function errorCallback(response) {
-            $scope.reg_message = 'Username already taken.';
+            //$scope.reg_message = 'Username already taken.';
+            $.notify({
+                icon: 'ti-lock',
+                message: "Username already taken. Please try a different username."
+
+            }, {
+                type: 'danger',
+                timer: 4000,
+                placement: {
+                    from: 'top',
+                    align: 'center'
+                }
+            });
             $scope.unblockUICall();
             // called asynchronously if an error occurs
             // or server returns response with an error status.

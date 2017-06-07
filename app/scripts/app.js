@@ -38,7 +38,7 @@ var module = angular.module('stockApp', [
   // });
 
   module.config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/login');
 
     $stateProvider
       .state('login', {
@@ -55,5 +55,9 @@ var module = angular.module('stockApp', [
         url : '/home',
         templateUrl : 'views/dashboard.html',
         controller : 'MainCtrl'
+      })
+      .state('resetPassword', {
+        url: '/resetPassword',
+        templateUrl : 'views/resetPassword.html'
       });
   });
