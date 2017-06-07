@@ -56,8 +56,8 @@ var module = angular.module('stockApp', [
         templateUrl : 'views/dashboard.html',
         controller : 'MainCtrl'
       })
-      .state('resetPassword', {
-        url: '/resetPassword',
-        templateUrl : 'views/resetPassword.html'
+      .state('activateUser', {
+        url: '/activateUser',
+        templateUrl : 'views/userActivation.html'
       });
   });
