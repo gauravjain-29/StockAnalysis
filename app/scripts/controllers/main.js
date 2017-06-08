@@ -41,6 +41,7 @@ angular.module('stockApp')
 
         $scope.blockUICall = function() {
             $.blockUI({
+                message: 'Getting everything ready.',
                 css: {
                     border: 'none',
                     padding: '15px',
@@ -78,6 +79,13 @@ angular.module('stockApp')
             // }
             $scope.nseCodesArray = rawData;
             $scope.unblockUICall();
+            $.getScript( "assets/js/paper-dashboard.js", function( data, textStatus, jqxhr ) {
+              console.log( data ); // Data returned
+              console.log( textStatus ); // Success
+              console.log( jqxhr.status ); // 200
+              console.log( "Load was performed." );
+            });
+
         }, function errorCallback(response) {
             $state.transitionTo('login');
             $scope.unblockUICall();
@@ -92,7 +100,6 @@ angular.module('stockApp')
 
         }).then(function successCallback(response) {
             $scope.userDetails = response.data;
-            console.log(response);
             $.notify({
                 icon: 'ti-user',
                 message: "Welcome " + $scope.userDetails.username
@@ -167,6 +174,7 @@ angular.module('stockApp')
         // }
 
         $scope.logout = function() {
+            console.log('Logging out');
             $cookies.remove('jwtOAuthToken');
             $state.transitionTo('login');
         }

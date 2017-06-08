@@ -27,6 +27,7 @@
 </head>
 
 <body>
+
     <div class="wrapper">
         <div class="sidebar collapse navbar-collapse" data-background-color="white" data-active-color="danger">
             <!--
@@ -123,7 +124,7 @@
                                     <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#" ng-click="logout()">Logout</a></li>
+                                    <li><a onclick="logout()" id="logoutElement">Logout</a></li>
                                     <!-- <li><a href="#">Notification 2</a></li>
                                     <li><a href="#">Notification 3</a></li>
                                     <li><a href="#">Notification 4</a></li>
@@ -464,7 +465,13 @@
 
     </div>
 </body>
-    <script src="assets/js/paper-dashboard.js"></script>
-    <script src="../Highstock-5.0.12/code/highstock.js"></script>
-    <script src="../Highstock-5.0.12/code/modules/exporting.js"></script>
+<script type="text/javascript">
+function logout()
+{
+    $('.navbar-toggle').click();
+    angular.element(document.getElementById('logoutElement')).scope().logout();
+    console.log('Invoked');
+}
+</script>
+    <!-- <script src="assets/js/paper-dashboard.js"></script> -->
 </html>
