@@ -187,7 +187,7 @@ angular.module('stockApp')
             for (var item in shareData) {
                 var itemData = shareData[item];
                 //var itemObj = { x: new Date(itemData.Date), y: [itemData.Open, itemData.High, itemData.Low, itemData.Close] };
-                var itemArray = [new Date(itemData.Date).getTime() + 5.5 * 3600 * 1000, itemData.Open, itemData.High, itemData.Low, itemData.Close];
+                var itemArray = [itemData.Date*1000, itemData.Open, itemData.High, itemData.Low, itemData.Close];
 
                 formattedData.push(itemArray);
             }
@@ -314,9 +314,13 @@ angular.module('stockApp')
                 headers: { Authorization: 'JWT ' + $scope.jwtToken },
                 success: function(response) {
                     $scope.shareData = response;
-                    console.log(response);
                     $scope.draw();
-                    $scope.tickerData = response.reverse();
+                    var tickerData = response.reverse();
+                    for(var i=0; i<tickerData.length; i++)
+                    {
+                        tickerData[i].Date = new Date(tickerData[i].Date*1000).toISOString().slice(0,10);
+                    }
+                    $scope.tickerData = tickerData;
                     $scope.$digest();
                 },
                 error: function(response) {
