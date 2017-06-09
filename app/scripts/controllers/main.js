@@ -39,6 +39,7 @@ angular.module('stockApp')
         //     // or server returns response with an error status.
         // });
 
+
         $scope.blockUICall = function() {
             $.blockUI({
                 message: 'Getting everything ready.',
@@ -407,16 +408,38 @@ angular.module('stockApp').directive('datePicker', function() {
 
 angular.module('stockApp').controller('LoginController', function($scope, $rootScope, $stateParams, $state, $http, $cookies, jwtHelper) {
 
-    // $scope.formSubmit = function() {
-    //     if (LoginService.login($scope.username, $scope.password)) {
-    //         $scope.error = '';
-    //         $scope.username = '';
-    //         $scope.password = '';
-    //         $state.transitionTo('home');
-    //     } else {
-    //         $scope.error = "Incorrect username/password !";
-    //     }
-    // };
+    $scope.emailCheckStatus = -1;
+    $scope.checkEmail = function()
+    {
+        console.log('Enetered Here');
+        
+        if($scope.reg_email != null && $scope.reg_email != undefined && $scope.reg_email.includes('@'))
+        {
+            $scope.emailCheckStatus = 0;
+            $http({
+            method: 'GET',
+            url: baseURL + 'checkEmail/?email='+$scope.reg_email
+
+            }).then(function successCallback(response) {
+               if(response.data)
+               {
+                    $scope.emailCheckStatus = 1;
+               }
+               else
+               {
+                    $scope.emailCheckStatus = 2;
+               }
+
+            }, function errorCallback(response) {
+                
+            });
+        }
+        else
+        {
+            $scope.emailCheckStatus = -1;
+        }
+    }
+
     var jwtToken = $cookies.get('jwtOAuthToken');
     if (jwtToken != undefined && !jwtHelper.isTokenExpired(jwtToken)) {
         $state.transitionTo('home');
