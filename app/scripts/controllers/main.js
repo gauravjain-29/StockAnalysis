@@ -24,21 +24,6 @@ angular.module('stockApp')
     .controller('MainCtrl', function($scope, $http, $cookies, jwtHelper, $state) {
 
         var baseURL = 'https://django-qa.herokuapp.com/';
-        // $http({
-        //     method: 'GET',
-        //     url: '/data/NSE-datasets-codes.csv'
-        // }).then(function successCallback(response) {
-        //     var rawData = Papa.parse(response.data);
-        //     for (var i in rawData.data) {
-        //         rawData.data[i][0] = rawData.data[i][0].substring(4);
-        //     }
-        //     $scope.nseCodesArray = rawData;
-        //     console.log(rawData);
-        // }, function errorCallback(response) {
-        //     // called asynchronously if an error occurs
-        //     // or server returns response with an error status.
-        // });
-
 
         $scope.blockUICall = function() {
             $.blockUI({
@@ -66,6 +51,23 @@ angular.module('stockApp')
             $state.transitionTo('login');
             return;
         }
+
+        $scope.pageToDisplay = 'home';
+        $scope.pageTitle = 'Home';
+        $scope.userProfileFunction = function()
+        {
+             $scope.pageToDisplay = 'profile';
+             $scope.pageTitle = 'User Profile';
+             $scope.$digest();
+        }
+
+        $scope.homeFunction = function()
+        {
+            $scope.pageTitle = 'Home';
+             $scope.pageToDisplay = 'home';
+             $scope.$digest();
+        }
+
         $scope.blockUICall();
 
         $http({
@@ -384,6 +386,7 @@ angular.module('stockApp')
         }
 
         $scope.setScrip = function(scripSelected) {
+            console.log('Working');
             $scope.scripCode = scripSelected;
             $scope.dismissSearch = true;
         }
@@ -563,6 +566,17 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
 
 });
 
+angular.module('stockApp').directive('homePage', function() {
+    return {
+        templateUrl: 'views/home.html'
+    };
+});
+
+angular.module('stockApp').directive('profilePage', function() {
+    return {
+        templateUrl: 'views/profile.html'
+    };
+});
 // angular.module('stockApp').factory('LoginService', function($http) {
 //     var admin = 'admin';
 //     var pass = 'admin123';

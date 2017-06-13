@@ -53,12 +53,17 @@ var module = angular.module('stockApp', [
       // });
       .state('home', {
         url : '/home',
-        templateUrl : 'views/dashboard.html',
+        templateUrl : 'views/main.html',
         controller : 'MainCtrl'
       })
       .state('activateUser', {
         url: '/activateUser/',
         templateUrl : 'views/userActivation.html',
         controller: 'activateUserCtrl'
-      });
+      })
+      // .state('profile', {
+      //   url: '/profile',
+      //   templateUrl : 'views/profile.html'
+      //   //controller: 'activateUserCtrl'
+      // });
   });

@@ -284,7 +284,7 @@ hr {
         content: "";
         display: inline-block;
         position: absolute;
-        right: 0;
+        right: 15px;
         top: 8px; }
       .sidebar .nav li.active > a:after,
       .off-canvas-sidebar .nav li.active > a:after {
@@ -294,7 +294,7 @@ hr {
         content: "";
         display: inline-block;
         position: absolute;
-        right: -1px;
+        right: 15px;
         top: 8px; }
     .sidebar .nav p,
     .off-canvas-sidebar .nav p {
