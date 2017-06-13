@@ -569,6 +569,8 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
 
 angular.module('stockApp').directive('homePage', function() {
     return {
+        restrict: 'E',
+        scope: false,
         templateUrl: 'views/home.html'
     };
 });
@@ -577,10 +579,7 @@ angular.module('stockApp').directive('profilePage', function() {
     return {
         restrict: 'E',
         scope: false,
-        templateUrl: 'views/profile.html',
-        link: function(scope, element, attrs) {
-            scope.$apply();
-        }
+        templateUrl: 'views/profile.html'
     };
 });
 // angular.module('stockApp').factory('LoginService', function($http) {
