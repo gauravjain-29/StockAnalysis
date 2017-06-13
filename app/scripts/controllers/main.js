@@ -386,7 +386,8 @@ angular.module('stockApp')
         }
 
         $scope.setScrip = function(scripSelected) {
-            console.log('Working');
+            console.log('Working'+scripSelected);
+            $scope.msg = 'Test';
             $scope.scripCode = scripSelected;
             $scope.dismissSearch = true;
         }
@@ -574,7 +575,12 @@ angular.module('stockApp').directive('homePage', function() {
 
 angular.module('stockApp').directive('profilePage', function() {
     return {
-        templateUrl: 'views/profile.html'
+        restrict: 'E',
+        scope: false,
+        templateUrl: 'views/profile.html',
+        link: function(scope, element, attrs) {
+            scope.$apply();
+        }
     };
 });
 // angular.module('stockApp').factory('LoginService', function($http) {
