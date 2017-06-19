@@ -42,7 +42,7 @@
                 <ul class="nav">
                     <li class="active homeNav" style="cursor: pointer;">
                         <a onclick="navigateToHome()">
-                            <i class="ti-panel"></i>
+                            <i class="ti-home"></i>
                             <p>Home</p>
                         </a>
                     </li>
@@ -50,6 +50,12 @@
                         <a onclick="navigateToProfile()">
                             <i class="ti-user"></i>
                             <p>User Profile</p>
+                        </a>
+                    </li>
+                    <li class="dashboardNav" style="cursor: pointer;">
+                        <a onclick="navigateToDashboard()">
+                            <i class="ti-dashboard"></i>
+                            <p>Dashboard</p>
                         </a>
                     </li>
                     <!--<li>
@@ -103,9 +109,36 @@
                             <span class="icon-bar bar2"></span>
                             <span class="icon-bar bar3"></span>
                         </button>
-                        <a class="navbar-brand">{{pageTitle}}</a>
-                    </div>
-                    <div class="collapse navbar-collapse">
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-6" style="float: left;">
+                                    <div class="card">
+                                        <a style="margin-left: -15px;font-weight: 600;margin-top: 5px;padding: 20px 15px;font-size: 20px;color: #777;height: 50px;float: left;line-height: 20px;">{{pageTitle}}</a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-sm-6 searchBar" style="margin-top: 14px;">
+                                    <div class="card">
+                                        <div class="input-group stylish-input-group">
+                                            <input type="text" class="form-control" placeholder="Search" ng-model="scripCode" ng-change="dismissSearch=false;scripCode=scripCode.toUpperCase()">
+                                            <span class="input-group-addon">
+                                                <button type="submit" ng-click="getTicker()" ng-disabled="!scripCode">
+                                                    <span class="fa fa-search"></span>
+                                            </button>
+                                            </span>
+                                        </div>
+                                        <div style="position: absolute;width: 100%;" ng-show="scripCode && !dismissSearch">
+                                            <table class="table table-striped table-bordered">
+                                                <tr ng-repeat="scrip in nseCodesArray.data | filter:scripCode" ng-click="setScrip(scrip.Code)">
+                                                    <td>{{scrip.Code}}</td>
+                                                    <td>{{scrip.Name}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-sm-6" style="float: right;">
+                                    <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
                             <li>
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -136,33 +169,73 @@
                             </li>
                         </ul>
                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            
+                            
+                        </div>
+                    </div>
+                    
                 </div>
             </nav>
             <div class="content">
                 <home-page ng-show="pageToDisplay=='home'"></home-page>
                 <profile-page ng-show="pageToDisplay=='profile'"></profile-page>
+                <dashboard ng-if="pageToDisplay=='dashboard'"></dashboard>
             </div>
         </div>
     </div>
 </body>
 <script type="text/javascript">
+$(document).ready(function(){
+    window_width = $(window).width();
+
+    // Init navigation toggle for small screens
+    if(window_width <= 991){
+        $(".searchBar").css('float', 'right');
+        $(".searchBar").removeClass("col-sm-6");
+        $(".searchBar").addClass("col-sm-12");   
+    }
+    else
+    {
+        $(".searchBar").css('float', '');
+        $(".searchBar").addClass("col-sm-6");
+        $(".searchBar").removeClass("col-sm-12");   
+    }
+
+});
+
+$(window).resize(function(){
+    window_width = $(window).width();
+    if(window_width <= 991){
+       $(".searchBar").css('float', 'right');
+       $(".searchBar").removeClass("col-sm-6");
+       $(".searchBar").addClass("col-sm-12");
+    }
+    else
+    {
+        $(".searchBar").css('float', '');
+        $(".searchBar").addClass("col-sm-6");
+        $(".searchBar").removeClass("col-sm-12");   
+    }
+});
 
 function navigateToProfile()
 {
-   angular.element(document.querySelector('.userProfileNav')).scope().userProfileFunction();
-
-    $(".homeNav").removeClass("active");
-    $(".userProfileNav").addClass("active");
-    
+   angular.element(document.querySelector('.userProfileNav')).scope().userProfileFunction(true);    
 }
 
 function navigateToHome()
 {
-   angular.element(document.querySelector('.homeNav')).scope().homeFunction();
+   angular.element(document.querySelector('.homeNav')).scope().homeFunction(true, true);
+}
 
-    $(".userProfileNav").removeClass("active");
-    $(".homeNav").addClass("active");
-    
+function navigateToDashboard()
+{
+    angular.element(document.querySelector('.dashboardNav')).scope().dashboardFunction(true);
 }
 
 function logout() {

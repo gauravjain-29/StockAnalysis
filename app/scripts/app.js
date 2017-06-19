@@ -18,7 +18,8 @@ var module = angular.module('stockApp', [
     'ngSanitize',
     'ngTouch',
     'ui.router',
-    'angular-jwt'
+    'angular-jwt',
+    'ngMaterial'
   ]);
   // module.config(function ($routeProvider) {
   //   $routeProvider
@@ -52,7 +53,18 @@ var module = angular.module('stockApp', [
       //   controller : 'MainCtrl'
       // });
       .state('home', {
-        url : '/home',
+        url : '/home/',
+        templateUrl : 'views/main.html',
+        controller : 'MainCtrl',
+        reloadOnSearch: false
+      })
+      .state('home.profile', {
+        url : 'profile',
+        templateUrl : 'views/main.html',
+        controller : 'MainCtrl'
+      })
+      .state('home.dashboard', {
+        url : 'dashboard',
         templateUrl : 'views/main.html',
         controller : 'MainCtrl'
       })
