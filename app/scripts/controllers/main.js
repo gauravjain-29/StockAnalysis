@@ -24,7 +24,6 @@ angular.module('stockApp')
     .controller('MainCtrl', function($scope, $http, $cookies, jwtHelper, $state, blockui, $location) {
 
         $scope.jwtToken = $cookies.get('jwtOAuthToken');
-
         if ($scope.jwtToken == undefined || jwtHelper.isTokenExpired($scope.jwtToken)) {
             $state.transitionTo('login');
             return;
