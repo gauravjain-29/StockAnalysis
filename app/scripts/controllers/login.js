@@ -86,7 +86,11 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
             $cookies.put('jwtOAuthToken', $scope.jwt);
             //store.set('token', response.token);
             $scope.unblockUICall();
-            $state.transitionTo('home');
+            var stateBeforeLogin = $cookies.get('stateBeforeLogin')
+            if(!stateBeforeLogin)
+                stateBeforeLogin = 'home';
+
+            $state.go(stateBeforeLogin);
         }, function errorCallback(response) {
             $scope.logged = false;
             //$scope.error = "Incorrect username/password !";

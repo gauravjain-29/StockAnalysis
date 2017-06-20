@@ -8,12 +8,27 @@
  * Controller of the stockApp
  */
 
-angular.module('stockApp').run(function($rootScope, $location, $state) {
+angular.module('stockApp').run(function($rootScope, $location, $state, $cookies) {
     $rootScope.$on('$stateChangeStart',
         function(event, toState, toParams, fromState, fromParams) {
-            console.log('Changed state to: ' + toState);
-            console.log(toState);
+            if (toState.name == 'login') {
+                $cookies.put('stateBeforeLogin', fromState.name);
+                $cookies.put('paramsBeforeLogin', JSON.stringify($location.search()));
+            }
+
         });
+
+    $rootScope.$on('$stateChangeSuccess',
+        function(event, toState, toParams, fromState, fromParams) {
+            //restore search term to url
+            console.log(fromState);
+            console.log(toState);
+            if (fromState.name == 'login')
+                $location.search(JSON.parse($cookies.get('paramsBeforeLogin')));
+        }
+    );
+
+
 
     // if (!LoginService.isAuthenticated()) {
     //     $state.transitionTo('login');
@@ -23,6 +38,7 @@ angular.module('stockApp').run(function($rootScope, $location, $state) {
 angular.module('stockApp')
     .controller('MainCtrl', function($scope, $http, $cookies, jwtHelper, $state, blockui, $location) {
 
+        console.log($state);
         $scope.jwtToken = $cookies.get('jwtOAuthToken');
         if ($scope.jwtToken == undefined || jwtHelper.isTokenExpired($scope.jwtToken)) {
             $state.transitionTo('login');
@@ -37,7 +53,7 @@ angular.module('stockApp')
             $(".homeNav").removeClass("active");
             $(".dashboardNav").removeClass("active");
             $(".userProfileNav").addClass("active");
-            if(doDigest)
+            if (doDigest)
                 $scope.$digest();
             $state.transitionTo('home.profile');
         }
@@ -48,9 +64,9 @@ angular.module('stockApp')
             $(".userProfileNav").removeClass("active");
             $(".dashboardNav").removeClass("active");
             $(".homeNav").addClass("active");
-            if(doDigest)
+            if (doDigest)
                 $scope.$digest();
-            $state.go('home',{},{location:changeUrl});
+            $state.go('home', {}, { location: changeUrl });
         }
 
         $scope.dashboardFunction = function(doDigest) {
@@ -59,7 +75,7 @@ angular.module('stockApp')
             $(".userProfileNav").removeClass("active");
             $(".homeNav").removeClass("active");
             $(".dashboardNav").addClass("active");
-            if(doDigest)
+            if (doDigest)
                 $scope.$digest();
             $state.transitionTo('home.dashboard');
         }
@@ -86,16 +102,12 @@ angular.module('stockApp')
                 console.log("Load was performed.");
             });
 
-            if($state.current.name == 'home')
-            {
+            if ($state.current.name == 'home') {
                 //$scope.homeFunction(false);
-            }
-            else if($state.current.name == 'home.profile')
-            {
+            } else if ($state.current.name == 'home.profile') {
                 $scope.userProfileFunction(false);
             }
-            if($state.current.name == 'home.dashboard')
-            {
+            if ($state.current.name == 'home.dashboard') {
                 $scope.dashboardFunction(false);
             }
 
@@ -121,9 +133,9 @@ angular.module('stockApp')
                 //$scope.$digest();
                 //blockui.unblockUICall();
                 var queryParams = $location.search();
-            $scope.scripCode = queryParams.stock;
-            if($scope.scripCode)
-                $scope.getTicker();
+                $scope.scripCode = queryParams.stock;
+                if ($scope.scripCode)
+                    $scope.getTicker();
             },
             error: function(response) {
                 console.log(response);
@@ -202,7 +214,7 @@ angular.module('stockApp')
         $scope.getTicker = function() {
 
             $scope.homeFunction(false, false);
-            $location.url('home/?stock='+$scope.scripCode);
+            $location.url('home/?stock=' + $scope.scripCode);
             $scope.history = false;
             $scope.ticker = true;
             //$scope.data = '';
@@ -346,9 +358,9 @@ angular.module('stockApp')
         }
 
 
-        
 
-        
+
+
 
         $scope.logout = function() {
             console.log('Logging out');
