@@ -19,7 +19,8 @@ var module = angular.module('stockApp', [
     'ngTouch',
     'ui.router',
     'angular-jwt',
-    'ngMaterial'
+    'ngMaterial',
+    'datatables'
   ]);
   // module.config(function ($routeProvider) {
   //   $routeProvider

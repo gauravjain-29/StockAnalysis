@@ -38,7 +38,6 @@ angular.module('stockApp').run(function($rootScope, $location, $state, $cookies)
 angular.module('stockApp')
     .controller('MainCtrl', function($scope, $http, $cookies, jwtHelper, $state, blockui, $location) {
 
-        console.log($state);
         $scope.jwtToken = $cookies.get('jwtOAuthToken');
         if ($scope.jwtToken == undefined || jwtHelper.isTokenExpired($scope.jwtToken)) {
             $state.transitionTo('login');
@@ -96,9 +95,9 @@ angular.module('stockApp')
             $scope.nseCodesArray = rawData;
             blockui.unblockUICall();
             $.getScript("assets/js/paper-dashboard.js", function(data, textStatus, jqxhr) {
-                console.log(data); // Data returned
-                console.log(textStatus); // Success
-                console.log(jqxhr.status); // 200
+                //console.log(data); // Data returned
+                //console.log(textStatus); // Success
+                //console.log(jqxhr.status); // 200
                 console.log("Load was performed.");
             });
 
@@ -117,6 +116,24 @@ angular.module('stockApp')
             // called asynchronously if an error occurs
             // or server returns response with an error status.
         });
+
+        var getUserInterests = function()
+        {
+            $http({
+            method: 'GET',
+            url: baseURL + 'userInterests/',
+            headers: { Authorization: 'JWT ' + $scope.jwtToken }
+
+            }).then(function successCallback(response) {
+                console.log(response);
+                $scope.userInterests = response.data;
+
+            }, function errorCallback(response) {
+                
+            });
+        }
+
+        getUserInterests();
 
         //var tickerPostData = {}
         //tickerPostData.ticker = $scope.scripCode;

@@ -1,32 +1,40 @@
 <div class="container-fluid">
     <div class="card">
         <div class="header">
-            <h4 class="title">Favourite Stocks</h4>
-        </div>
-        <div class="content">
-            <table class="table table-striped">
-            	<tr>
-            		<th>Stock Code</th>
-            		<th>Stock Name</th>
-            		<th>Actions</th>
-            		<th>Favourite</th>
-            	</tr>
-                <tr ng-repeat="data in stocks200" ng-if="data.interested">
-                    <td>{{data.code}}</td>
-                    <td>{{data.name}}</td>
-                    <td>
-                    	<a class="btn"><i class="ti-stats-up"></i></a>
-                    	<a class="btn"><i class="ti-more"></i></a>
-                    </td>
-                    <td>
-                    	<md-checkbox ng-model="data.interested" aria-label="isInterested">
-          				</md-checkbox>
-                    </td>
+            <table style="width: 100%;">
+                <tr>
+                    <td><h4 class="title">Favourite Stocks</h4></td>
+                    <td ng-if="userDetails.is_superuser"><button type="button" class="btn btn-info" style="float: right;border-radius: 5px;" ng-click="updateFavoriteStocks()">Update</button></td>
                 </tr>
             </table>
         </div>
+        <div class="content">
+            <table class="table table-striped" datatable="ng">
+            <thead>
+            	<tr>
+            		<th>Stock Code</th>
+            		<th>Stock Name</th>
+            		<!-- <th>Actions</th> -->
+            		<th ng-if="userDetails.is_superuser">Favourite</th>
+            	</tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="data in userInterests" ng-if="userDetails.is_superuser || data.interested">
+                    <td>{{data.ticker_details.Code}}</td>
+                    <td>{{data.ticker_details.Name}}</td>
+                    <td ng-if="userDetails.is_superuser">
+                    	<md-checkbox ng-model="data.interested" aria-label="isInterested">
+          				</md-checkbox>
+                        <div ng-hide="true">{{data.interested}}</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="card">
+
+    
+    <!-- <div class="card">
         <div class="header">
             <h4 class="title">Other Stocks</h4>
         </div>
@@ -52,5 +60,5 @@
                 </tr>
             </table>
         </div>
-    </div>
+    </div> -->
 </div>
