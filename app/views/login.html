@@ -135,9 +135,15 @@
                                             <form id="login-form" ng-submit="login()" style="display: block;">
                                                 <div class="form-group">
                                                     <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="" ng-model="username">
+                                                    <md-tooltip md-direction="bottom">
+                                                        Please enter your username.
+                                                    </md-tooltip>
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" ng-model="password">
+                                                    <md-tooltip md-direction="bottom">
+                                                        Please enter your password.
+                                                    </md-tooltip>
                                                 </div>
                                                 <div class="form-group text-center">
                                                     <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
@@ -171,6 +177,9 @@
                                                             <div class="col-lg-12 col-sm-12">
                                                                 <div class="card">
                                                                         <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" ng-model="reg_username">
+                                                                        <md-tooltip md-direction="bottom">
+                                                                            Please choose a username.
+                                                                        </md-tooltip>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -179,16 +188,28 @@
                                                                 <div class="card">
                                                                     <div class="input-group stylish-input-group">
                                                                         <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" ng-model="reg_email" ng-change="checkEmail()">
+                                                                        <md-tooltip md-direction="bottom">
+                                                                            Please Enter a valid email Id.
+                                                                        </md-tooltip>
                                                                         <span class="input-group-addon" style="background: lightgray;">
                                                                             <div ng-switch="emailCheckStatus">
                                                                                 <div ng-switch-when="0">
                                                                                     <i class="fa fa-circle-o-notch fa-spin" style="color: green;"></i>
+                                                                                    <md-tooltip md-direction="bottom">
+                                                                                        Validating email Id.
+                                                                                    </md-tooltip>
                                                                                 </div>
                                                                                 <div ng-switch-when="2">
                                                                                     <i class="fa fa-check" style="color: green;"></i>
+                                                                                    <md-tooltip md-direction="bottom">
+                                                                                        Congratulations, Email Id is available.
+                                                                                    </md-tooltip>
                                                                                 </div>
                                                                                 <div ng-switch-when="1">
                                                                                     <i class="fa fa-times" style="color: red;"></i>
+                                                                                    <md-tooltip md-direction="bottom">
+                                                                                        Email Id already taken.
+                                                                                    </md-tooltip>
                                                                                 </div>
                                                                             </div>
                                                                         </span>
@@ -200,6 +221,9 @@
                                                             <div class="col-lg-12 col-sm-12">
                                                                 <div class="card">
                                                                         <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" ng-model="reg_password">
+                                                                        <md-tooltip md-direction="bottom">
+                                                                            Please choose a password.
+                                                                        </md-tooltip>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -208,12 +232,21 @@
                                                                 <div class="card">
                                                                     <div class="input-group stylish-input-group">
                                                                         <input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password" ng-model="reg_password_confirm">
+                                                                        <md-tooltip md-direction="bottom">
+                                                                            Please re-enter same password.
+                                                                        </md-tooltip>
                                                                         <span class="input-group-addon" style="background: lightgray;">
                                                                             <div ng-show="reg_password_confirm && reg_password_confirm == reg_password">
                                                                                 <i class="fa fa-check" style="color: green;"></i>
+                                                                                <md-tooltip md-direction="bottom">
+                                                                                    Passwords Match.
+                                                                                </md-tooltip>
                                                                             </div>
                                                                             <div ng-show="reg_password_confirm && reg_password_confirm != reg_password">
                                                                                 <i class="fa fa-times" style="color: red;"></i>
+                                                                                <md-tooltip md-direction="bottom">
+                                                                                    Passwords does not match.
+                                                                                </md-tooltip>
                                                                             </div>
                                                                         </span>
                                                                     </div>

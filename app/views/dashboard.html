@@ -23,7 +23,16 @@
                     <td ng-init="pointersData = getPointersForDashboard(data.ticker_details.Code)">
                         <div class="row">
                             <div class="col-lg-12 col-sm-12">
-                                <div class="card" style="background: cornsilk;">
+                                <div class="card red-tooltip" style="background: cornsilk;">
+                                    <md-tooltip md-direction="bottom">
+                                    GAP UP: {{pointersData.gapUp}}<br />
+                                    TIME SPEND: {{pointersData.timeSpend}}<br />
+                                    EARNING: {{pointersData.earning}}<br />
+                                    HIGH: {{pointersData.high}}<br />
+                                    FRESHNESS: {{pointersData.freshness}}<br />
+                                    DIVIDEND: {{pointersData.dividend}}<br />
+                                    TREND: {{pointersData.trend}}
+                                    </md-tooltip>
                                     <div class="content">
                                         <div class="row">
                                             <div class="col-xs-3">
