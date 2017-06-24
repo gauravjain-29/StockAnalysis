@@ -58,6 +58,12 @@
                             <p>Dashboard</p>
                         </a>
                     </li>
+                    <li class="adminConsoleNav" style="cursor: pointer;" ng-if="userDetails.is_superuser">
+                        <a onclick="navigateToAdminConsole()">
+                            <i class="ti-crown"></i>
+                            <p>Admin Console</p>
+                        </a>
+                    </li>
                     <!--<li>
                         <a href="table.html">
                             <i class="ti-view-list-alt"></i>
@@ -185,6 +191,7 @@
                 <home-page ng-show="pageToDisplay=='home'"></home-page>
                 <profile-page ng-show="pageToDisplay=='profile'"></profile-page>
                 <dashboard ng-if="pageToDisplay=='dashboard'"></dashboard>
+                <admin ng-if="pageToDisplay=='adminconsole' && userDetails.is_superuser"></admin>
             </div>
         </div>
     </div>
@@ -236,6 +243,11 @@ function navigateToHome()
 function navigateToDashboard()
 {
     angular.element(document.querySelector('.dashboardNav')).scope().dashboardFunction(true);
+}
+
+function navigateToAdminConsole()
+{
+    angular.element(document.querySelector('.adminConsoleNav')).scope().adminConsoleFunction(true);
 }
 
 function logout() {

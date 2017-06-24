@@ -51,6 +51,7 @@ angular.module('stockApp')
             $scope.pageTitle = 'User Profile';
             $(".homeNav").removeClass("active");
             $(".dashboardNav").removeClass("active");
+            $(".adminConsoleNav").removeClass("active");
             $(".userProfileNav").addClass("active");
             if (doDigest)
                 $scope.$digest();
@@ -62,6 +63,7 @@ angular.module('stockApp')
             $scope.pageToDisplay = 'home';
             $(".userProfileNav").removeClass("active");
             $(".dashboardNav").removeClass("active");
+            $(".adminConsoleNav").removeClass("active");
             $(".homeNav").addClass("active");
             if (doDigest)
                 $scope.$digest();
@@ -73,10 +75,23 @@ angular.module('stockApp')
             $scope.pageToDisplay = 'dashboard';
             $(".userProfileNav").removeClass("active");
             $(".homeNav").removeClass("active");
+            $(".adminConsoleNav").removeClass("active");
             $(".dashboardNav").addClass("active");
             if (doDigest)
                 $scope.$digest();
             $state.transitionTo('home.dashboard');
+        }
+
+        $scope.adminConsoleFunction = function(doDigest) {
+            $scope.pageTitle = 'Admin Console';
+            $scope.pageToDisplay = 'adminconsole';
+            $(".userProfileNav").removeClass("active");
+            $(".homeNav").removeClass("active");
+            $(".dashboardNav").removeClass("active");
+            $(".adminConsoleNav").addClass("active");
+            if (doDigest)
+                $scope.$digest();
+            $state.transitionTo('home.admin');
         }
 
 
@@ -106,8 +121,11 @@ angular.module('stockApp')
             } else if ($state.current.name == 'home.profile') {
                 $scope.userProfileFunction(false);
             }
-            if ($state.current.name == 'home.dashboard') {
+            else if ($state.current.name == 'home.dashboard') {
                 $scope.dashboardFunction(false);
+            }
+            else if ($state.current.name == 'home.admin' && $scope.userDetails.is_superuser) {
+                $scope.adminConsoleFunction(false);
             }
 
         }, function errorCallback(response) {
@@ -137,7 +155,7 @@ angular.module('stockApp')
 
         //var tickerPostData = {}
         //tickerPostData.ticker = $scope.scripCode;
-        var pointers = [];
+        $scope.pointersData = [];
         $.ajax({
             url: (baseURL + 'pointers/'),
             dataType: 'json',
@@ -145,7 +163,7 @@ angular.module('stockApp')
             //data: tickerPostData,
             headers: { Authorization: 'JWT ' + $scope.jwtToken },
             success: function(response) {
-                pointers = response;
+                $scope.pointersData = response;
                 console.log(response);
                 //$scope.$digest();
                 //blockui.unblockUICall();
@@ -363,8 +381,8 @@ angular.module('stockApp')
             //     }
             // });
             //find index of seleted scrip in the array of objects
-            var indexOfScrip = pointers.findIndex(findScrip);
-            $scope.pointers = pointers[indexOfScrip];
+            var indexOfScrip = $scope.pointersData.findIndex(findScrip);
+            $scope.pointers = $scope.pointersData[indexOfScrip];
             console.log($scope.pointers);
 
         }

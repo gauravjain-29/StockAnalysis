@@ -4,61 +4,60 @@
             <table style="width: 100%;">
                 <tr>
                     <td><h4 class="title">Favourite Stocks</h4></td>
-                    <td ng-if="userDetails.is_superuser"><button type="button" class="btn btn-info" style="float: right;border-radius: 5px;" ng-click="updateFavoriteStocks()">Update</button></td>
                 </tr>
             </table>
         </div>
         <div class="content">
             <table class="table table-striped" datatable="ng">
             <thead>
-            	<tr>
-            		<th>Stock Code</th>
-            		<th>Stock Name</th>
-            		<!-- <th>Actions</th> -->
-            		<th ng-if="userDetails.is_superuser">Favourite</th>
-            	</tr>
+                <tr>
+                    <th>Stock Code</th>
+                    <th>Stock Name</th>
+                    <th>Pointers</th>
+                </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="data in userInterests" ng-if="userDetails.is_superuser || data.interested">
+                <tr ng-repeat="data in userInterests" ng-if="data.interested">
                     <td>{{data.ticker_details.Code}}</td>
                     <td>{{data.ticker_details.Name}}</td>
-                    <td ng-if="userDetails.is_superuser">
-                    	<md-checkbox ng-model="data.interested" aria-label="isInterested">
-          				</md-checkbox>
-                        <div ng-hide="true">{{data.interested}}</div>
+                    <td ng-init="pointersData = getPointersForDashboard(data.ticker_details.Code)">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="card" style="background: cornsilk;">
+                                    <div class="content">
+                                        <div class="row">
+                                            <div class="col-xs-3">
+                                                <p>Entry</p>
+                                                <div ng-if="pointersData.entry">{{pointersData.entry}}</div>
+                                                <div ng-if="!pointersData.entry">NA</div>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <p>Target</p>
+                                                <div ng-if="pointersData.target">{{pointersData.target}}</div>
+                                                <div ng-if="!pointersData.target">NA</div>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <p>Stoploss</p>
+                                                <div ng-if="pointersData.stopLoss">{{pointersData.stopLoss}}</div>
+                                                <div ng-if="!pointersData.target">NA</div>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <p>TotalPoints</p>
+                                                <div ng-if="pointersData.totalPoints">{{pointersData.totalPoints}}</div>
+                                                <div ng-if="!pointersData.target">NA</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+        <!-- 
+                        <div>Entry: {{pointersData.entry}}</div>
+                        <div>Stoploss: {{pointersData.stopLoss}}</div>, T: {{pointersData.target}}, TP: {{pointersData.totalPoints}}</div> -->
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
-
-    
-    <!-- <div class="card">
-        <div class="header">
-            <h4 class="title">Other Stocks</h4>
-        </div>
-        <div class="content">
-            <table class="table table-striped">
-            	<tr>
-            		<th>Stock Code</th>
-            		<th>Stock Name</th>
-            		<th>Actions</th>
-            		<th>Favourite</th>
-            	</tr>
-                <tr ng-repeat="data in stocks200" ng-if="!data.interested">
-                    <td>{{data.code}}</td>
-                    <td>{{data.name}}</td>
-                    <td>
-                    	<a class="btn"><i class="ti-stats-up"></i></a>
-                    	<a class="btn"><i class="ti-more"></i></a>
-                    </td>
-                    <td>
-                    	<md-checkbox ng-model="data.interested" aria-label="isInterested">
-          				</md-checkbox>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div> -->
 </div>
