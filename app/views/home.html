@@ -214,7 +214,7 @@
                         <i class="fa fa-plus-square-o" aria-hidden="true" ng-show="isCollapsed" ng-click="isCollapsed=!isCollapsed" data-toggle="collapse" data-target="#HistoryTable"></i>
                         <i class="fa fa-minus-square-o" aria-hidden="true" ng-show="!isCollapsed" ng-click="isCollapsed=!isCollapsed" data-toggle="collapse" data-target="#HistoryTable"></i>
                     </div>
-                    <div layout="row" layout-sm="column" layout-align="space-around" ng-if="!tickerData">
+                    <div layout="row" layout-sm="column" layout-align="space-around" ng-if="!tickerDataLoaded">
                         <md-progress-circular md-mode="indeterminate"></md-progress-circular>
                     </div>
                 </div>

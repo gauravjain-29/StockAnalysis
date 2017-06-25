@@ -60,18 +60,15 @@ var module = angular.module('stockApp', [
       })
       .state('home.profile', {
         url : 'profile',
-        templateUrl : 'views/main.html',
-        controller : 'MainCtrl'
+        templateUrl : 'views/main.html'
       })
       .state('home.dashboard', {
         url : 'dashboard',
-        templateUrl : 'views/main.html',
-        controller : 'MainCtrl'
+        templateUrl : 'views/main.html'
       })
       .state('home.admin', {
         url : 'admin',
-        templateUrl : 'views/admin.html',
-        controller : 'MainCtrl'
+        templateUrl : 'views/admin.html'
       })
       .state('activateUser', {
         url: '/activateUser/',

@@ -46,7 +46,7 @@ angular.module('stockApp')
             $(".userProfileNav").addClass("active");
             if (doDigest)
                 $scope.$digest();
-            $state.transitionTo('home.profile');
+            $state.go('home.profile');
         }
 
         $scope.homeFunction = function(doDigest, changeUrl) {
@@ -62,6 +62,7 @@ angular.module('stockApp')
         }
 
         $scope.dashboardFunction = function(doDigest) {
+            $scope.showLoader = true;
             $scope.pageTitle = 'Dashboard';
             $scope.pageToDisplay = 'dashboard';
             $(".userProfileNav").removeClass("active");
@@ -70,10 +71,12 @@ angular.module('stockApp')
             $(".dashboardNav").addClass("active");
             if (doDigest)
                 $scope.$digest();
-            $state.transitionTo('home.dashboard');
+            $state.go('home.dashboard');
+            $scope.showLoader = false;
         }
 
         $scope.adminConsoleFunction = function(doDigest) {
+            $scope.showLoader = true;
             $scope.pageTitle = 'Admin Console';
             $scope.pageToDisplay = 'adminconsole';
             $(".userProfileNav").removeClass("active");
@@ -82,7 +85,8 @@ angular.module('stockApp')
             $(".adminConsoleNav").addClass("active");
             if (doDigest)
                 $scope.$digest();
-            $state.transitionTo('home.admin');
+            $state.go('home.admin');
+            $scope.showLoader = false;
         }
 
 
@@ -156,6 +160,7 @@ angular.module('stockApp')
         
 
         $scope.chartLoaded = true;
+        $scope.tickerDataLoaded = true;
         $scope.draw = function() {
             var shareData = $scope.shareData;
             var formattedData = [];
@@ -204,7 +209,7 @@ angular.module('stockApp')
 
         $scope.getTicker = function() {
             $scope.chartLoaded = false;
-            $scope.tickerData = '';
+            $scope.tickerDataLoaded = false;
             $scope.homeFunction(false, false);
             $location.url('home/?stock=' + $scope.scripCode);
             $scope.history = false;
@@ -270,6 +275,7 @@ angular.module('stockApp')
                 success: function(response) {
                     var tickerData = [];
                     angular.copy(response, tickerData);
+                    $scope.tickerDataLoaded = true;
                     $scope.shareData = response.reverse();
                     $scope.draw();
                     for (var i = 0; i < tickerData.length; i++) {

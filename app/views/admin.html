@@ -4,7 +4,7 @@
             <table style="width: 100%;">
                 <tr>
                     <td><h4 class="title">Update List of Favourite Stocks</h4></td>
-                    <td ng-if="userDetails.is_superuser"><button type="button" class="btn btn-info" style="float: right;border-radius: 5px;" ng-click="updateFavoriteStocks()">Update</button></td>
+                    <td><button type="button" class="btn btn-info" style="float: right;border-radius: 5px;" ng-click="updateFavoriteStocks()">Update</button></td>
                 </tr>
             </table>
         </div>
@@ -19,7 +19,7 @@
             	</tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="data in userInterests" ng-if="userDetails.is_superuser || data.interested">
+                <tr ng-repeat="data in userInterests">
                     <td>{{data.ticker_details.Code}}</td>
                     <td>{{data.ticker_details.Name}}</td>
                     <td ng-if="userDetails.is_superuser">
