@@ -9,7 +9,6 @@
  * Main module of the application.
  */
 var module = angular.module('stockApp', [
-    'ngAnimate',
     'ngAria',
     'ngCookies',
     'ngMessages',

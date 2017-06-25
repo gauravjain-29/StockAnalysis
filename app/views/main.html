@@ -135,7 +135,7 @@
                                         </div>
                                         <div style="position: absolute;width: 100%;" ng-show="scripCode && !dismissSearch">
                                             <table class="table table-striped table-bordered">
-                                                <tr ng-repeat="scrip in nseCodesArray.data | filter:scripCode" ng-click="setScrip(scrip.Code)">
+                                                <tr ng-repeat="scrip in nseCodesArray | filter:scripCode" ng-click="setScrip(scrip.Code)">
                                                     <td>{{scrip.Code}}</td>
                                                     <td>{{scrip.Name}}</td>
                                                 </tr>
@@ -217,6 +217,7 @@ $(document).ready(function(){
 
 $(window).resize(function(){
     window_width = $(window).width();
+    console.log(window_width);
     if(window_width <= 991){
        $(".searchBar").css('float', 'right');
        $(".searchBar").removeClass("col-sm-6");

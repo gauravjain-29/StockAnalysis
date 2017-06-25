@@ -4,10 +4,6 @@ angular.module('stockApp').directive('dashboard', function() {
         scope: false,
         templateUrl: 'views/dashboard.html',
         controller: function($scope, $cookies, jwtHelper, $http, blockui) {
-            $(function() {
-                $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
-            });
-
             var scripTofind = '';
             function findScrip(scrip) {
                 return scrip.ticker == scripTofind;

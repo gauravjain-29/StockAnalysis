@@ -20,23 +20,14 @@ angular.module('stockApp').run(function($rootScope, $location, $state, $cookies)
 
     $rootScope.$on('$stateChangeSuccess',
         function(event, toState, toParams, fromState, fromParams) {
-            //restore search term to url
-            console.log(fromState);
-            console.log(toState);
             if (fromState.name == 'login')
                 $location.search(JSON.parse($cookies.get('paramsBeforeLogin')));
         }
     );
-
-
-
-    // if (!LoginService.isAuthenticated()) {
-    //     $state.transitionTo('login');
-    // }
 });
 
 angular.module('stockApp')
-    .controller('MainCtrl', function($scope, $http, $cookies, jwtHelper, $state, blockui, $location) {
+    .controller('MainCtrl', function($scope, $http, $cookies, jwtHelper, $state, blockui, $location, $q) {
 
         $scope.jwtToken = $cookies.get('jwtOAuthToken');
         if ($scope.jwtToken == undefined || jwtHelper.isTokenExpired($scope.jwtToken)) {
@@ -97,42 +88,11 @@ angular.module('stockApp')
 
         blockui.blockUICall();
 
-        $http({
+        var promise1 = $http({
             method: 'GET',
             url: baseURL + 'stocks/',
             headers: { Authorization: 'JWT ' + $scope.jwtToken }
 
-        }).then(function successCallback(response) {
-            var rawData = response;
-            // for (var i in rawData.data) {
-            //     rawData.data[i][0] = rawData.data[i][0];
-            // }
-            $scope.nseCodesArray = rawData;
-            blockui.unblockUICall();
-            $.getScript("assets/js/paper-dashboard.js", function(data, textStatus, jqxhr) {
-                //console.log(data); // Data returned
-                //console.log(textStatus); // Success
-                //console.log(jqxhr.status); // 200
-                console.log("Load was performed.");
-            });
-
-            if ($state.current.name == 'home') {
-                //$scope.homeFunction(false);
-            } else if ($state.current.name == 'home.profile') {
-                $scope.userProfileFunction(false);
-            }
-            else if ($state.current.name == 'home.dashboard') {
-                $scope.dashboardFunction(false);
-            }
-            else if ($state.current.name == 'home.admin' && $scope.userDetails.is_superuser) {
-                $scope.adminConsoleFunction(false);
-            }
-
-        }, function errorCallback(response) {
-            $state.transitionTo('login');
-            blockui.unblockUICall();
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
         });
 
         var getUserInterests = function()
@@ -153,54 +113,46 @@ angular.module('stockApp')
 
         getUserInterests();
 
-        //var tickerPostData = {}
-        //tickerPostData.ticker = $scope.scripCode;
-        $scope.pointersData = [];
-        $.ajax({
-            url: (baseURL + 'pointers/'),
-            dataType: 'json',
-            type: 'get',
-            //data: tickerPostData,
-            headers: { Authorization: 'JWT ' + $scope.jwtToken },
-            success: function(response) {
-                $scope.pointersData = response;
-                console.log(response);
-                //$scope.$digest();
-                //blockui.unblockUICall();
-                var queryParams = $location.search();
-                $scope.scripCode = queryParams.stock;
-                if ($scope.scripCode)
-                    $scope.getTicker();
-            },
-            error: function(response) {
-                console.log(response);
-                //$scope.errorCode = response.status;
-                //if (response.status == 404) {
-                //$scope.errorMessage = response.responseText;
-                //$scope.errorMessage = "An error occured";
-                $.notify({
-                    icon: 'ti-face-sad',
-                    message: "Unable to fetch pointers."
+        
+        var promise2 = $http({
+            url: baseURL + 'pointers/',
+            method: 'GET',
+            headers: { Authorization: 'JWT ' + $scope.jwtToken }
+        });
 
-                }, {
-                    type: 'danger',
-                    timer: 4000
-                });
-                console.log(response.responseText);
-                //}
-                //$state.transitionTo('login');
-                $scope.$digest();
-                blockui.unblockUICall();
+        $q.all([promise1, promise2]).then(function(result) {
+            console.log(result);
+            $scope.nseCodesArray = result[0].data;
+            blockui.unblockUICall();
+            $.getScript("assets/js/paper-dashboard.js", function(data, textStatus, jqxhr) {
+            });
+
+            if ($state.current.name == 'home') {
+                //$scope.homeFunction(false);
+            } else if ($state.current.name == 'home.profile') {
+                $scope.userProfileFunction(false);
             }
+            else if ($state.current.name == 'home.dashboard') {
+                $scope.dashboardFunction(false);
+            }
+            else if ($state.current.name == 'home.admin' && $scope.userDetails.is_superuser) {
+                $scope.adminConsoleFunction(false);
+            }
+
+            $scope.pointersData = result[1].data;
+            var queryParams = $location.search();
+            $scope.scripCode = queryParams.stock;
+            if ($scope.scripCode)
+                $scope.getTicker();
         });
 
         function findScrip(scrip) {
             return scrip.ticker == $scope.scripCode;
         }
 
-        //$scope.scripCode = '';
+        
 
-
+        $scope.chartLoaded = true;
         $scope.draw = function() {
             var shareData = $scope.shareData;
             var formattedData = [];
@@ -243,11 +195,13 @@ angular.module('stockApp')
                 }]
             });
 
+            $scope.chartLoaded = true;
 
         }
 
         $scope.getTicker = function() {
-
+            $scope.chartLoaded = false;
+            $scope.tickerData = '';
             $scope.homeFunction(false, false);
             $location.url('home/?stock=' + $scope.scripCode);
             $scope.history = false;
@@ -257,12 +211,12 @@ angular.module('stockApp')
             //$scope.errorMessage = '';
             $scope.dismissSearch = true;
             //$scope.blockUICall();
-            for (var i = 0; i < $scope.nseCodesArray.data.length; i++) {
-                if ($scope.scripCode == $scope.nseCodesArray.data[i].Code) {
-                    $scope.scripName = $scope.nseCodesArray.data[i].Name;
+            for (var i = 0; i < $scope.nseCodesArray.length; i++) {
+                if ($scope.scripCode == $scope.nseCodesArray[i].Code) {
+                    $scope.scripName = $scope.nseCodesArray[i].Name;
                     break;
                 }
-                if (i == $scope.nseCodesArray.data.length - 1) {
+                if (i == $scope.nseCodesArray.length - 1) {
                     //$scope.errorMessage = 'Invalid Scrip Code';
                     $.notify({
                         icon: 'ti-face-sad',
@@ -294,7 +248,7 @@ angular.module('stockApp')
                 return;
             }
 
-            blockui.blockUICall();
+            //blockui.blockUICall();
             var postdata = {}
             postdata.ticker = $scope.scripCode;
             postdata.interval = 'daily';
@@ -320,7 +274,7 @@ angular.module('stockApp')
                     }
                     $scope.tickerData = tickerData;
                     $scope.$digest();
-                    blockui.unblockUICall();
+                    //blockui.unblockUICall();
                 },
                 error: function(response) {
                     console.log(response);
@@ -340,62 +294,20 @@ angular.module('stockApp')
                     //}
                     //$state.transitionTo('login');
                     $scope.$digest();
-                    blockui.unblockUICall();
+                    //blockui.unblockUICall();
 
                 }
             });
 
-            // var tickerPostData = {}
-            // tickerPostData.ticker = $scope.scripCode;
-            // $.ajax({
-            //     url: (baseURL + 'pointers/'),
-            //     dataType: 'json',
-            //     type: 'post',
-            //     data: tickerPostData,
-            //     headers: { Authorization: 'JWT ' + $scope.jwtToken },
-            //     success: function(response) {
-            //         $scope.pointers = response;
-            //         console.log($scope.pointers);
-            //         $scope.$digest();
-            //         blockui.unblockUICall();
-            //     },
-            //     error: function(response) {
-            //         console.log(response);
-            //         //$scope.errorCode = response.status;
-            //         //if (response.status == 404) {
-            //         //$scope.errorMessage = response.responseText;
-            //         //$scope.errorMessage = "An error occured";
-            //         $.notify({
-            //             icon: 'ti-face-sad',
-            //             message: "Unable to fetch pointers."
-
-            //         }, {
-            //             type: 'danger',
-            //             timer: 4000
-            //         });
-            //         console.log(response.responseText);
-            //         //}
-            //         //$state.transitionTo('login');
-            //         $scope.$digest();
-            //         blockui.unblockUICall();
-            //     }
-            // });
             //find index of seleted scrip in the array of objects
             var indexOfScrip = $scope.pointersData.findIndex(findScrip);
             $scope.pointers = $scope.pointersData[indexOfScrip];
-            console.log($scope.pointers);
-
         }
 
         $scope.setScrip = function(scripSelected) {
             $scope.scripCode = scripSelected;
             $scope.dismissSearch = true;
         }
-
-
-
-
-
 
         $scope.logout = function() {
             console.log('Logging out');

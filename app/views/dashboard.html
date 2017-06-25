@@ -1,11 +1,7 @@
 <div class="container-fluid">
     <div class="card">
         <div class="header">
-            <table style="width: 100%;">
-                <tr>
-                    <td><h4 class="title">Favourite Stocks</h4></td>
-                </tr>
-            </table>
+            <h4 class="title">Favourite Stocks</h4>
         </div>
         <div class="content">
             <table class="table table-striped" datatable="ng">
@@ -23,7 +19,7 @@
                     <td ng-init="pointersData = getPointersForDashboard(data.ticker_details.Code)">
                         <div class="row">
                             <div class="col-lg-12 col-sm-12">
-                                <div class="card red-tooltip" style="background: cornsilk;">
+                                <div class="card">
                                     <md-tooltip md-direction="bottom">
                                     GAP UP: {{pointersData.gapUp}}<br />
                                     TIME SPEND: {{pointersData.timeSpend}}<br />
@@ -33,30 +29,47 @@
                                     DIVIDEND: {{pointersData.dividend}}<br />
                                     TREND: {{pointersData.trend}}
                                     </md-tooltip>
-                                    <div class="content">
-                                        <div class="row">
-                                            <div class="col-xs-3">
-                                                <p>Entry</p>
-                                                <div ng-if="pointersData.entry">{{pointersData.entry}}</div>
-                                                <div ng-if="!pointersData.entry">NA</div>
-                                            </div>
-                                            <div class="col-xs-3">
-                                                <p>Target</p>
-                                                <div ng-if="pointersData.target">{{pointersData.target}}</div>
-                                                <div ng-if="!pointersData.target">NA</div>
-                                            </div>
-                                            <div class="col-xs-3">
-                                                <p>Stoploss</p>
-                                                <div ng-if="pointersData.stopLoss">{{pointersData.stopLoss}}</div>
-                                                <div ng-if="!pointersData.target">NA</div>
-                                            </div>
-                                            <div class="col-xs-3">
-                                                <p>TotalPoints</p>
-                                                <div ng-if="pointersData.totalPoints">{{pointersData.totalPoints}}</div>
-                                                <div ng-if="!pointersData.target">NA</div>
-                                            </div>
+                                    <table class="table">
+                                        <tr style="background: cornsilk;">
+                                            <td style="border: none;">Entry</td>
+                                            <td style="border: none;">Target</td>
+                                            <td style="border: none;">Stoploss</td>
+                                            <td style="border: none;">Total Points</td>
+                                        </tr>
+                                        <tr style="background: cornsilk;">
+                                            <td style="border: none;" ng-if="pointersData.entry">{{pointersData.entry}}</td>
+                                            <td style="border: none;" ng-if="!pointersData.entry">NA</td>
+                                            <td style="border: none;" ng-if="pointersData.entry">{{pointersData.target}}</td>
+                                            <td style="border: none;" ng-if="!pointersData.entry">NA</td>
+                                            <td style="border: none;" ng-if="pointersData.entry">{{pointersData.stopLoss}}</td>
+                                            <td style="border: none;" ng-if="!pointersData.entry">NA</td>
+                                            <td style="border: none;" ng-if="pointersData.entry">{{pointersData.totalPoints}}</td>
+                                            <td style="border: none;" ng-if="!pointersData.entry">NA</td>
+                                        </tr>
+                                    </table>
+                                    <!-- <div class="row">
+                                        <div class="col-xs-3">
+                                            <p>Entry</p>
+                                            <div ng-if="pointersData.entry">{{pointersData.entry}}</div>
+                                            <div ng-if="!pointersData.entry">NA</div>
                                         </div>
-                                    </div>
+                                        <div class="col-xs-3">
+                                            <p>Target</p>
+                                            <div ng-if="pointersData.target">{{pointersData.target}}</div>
+                                            <div ng-if="!pointersData.target">NA</div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <p>Stoploss</p>
+                                            <div ng-if="pointersData.stopLoss">{{pointersData.stopLoss}}</div>
+                                            <div ng-if="!pointersData.target">NA</div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <p>TotalPoints</p>
+                                            <div ng-if="pointersData.totalPoints">{{pointersData.totalPoints}}</div>
+                                            <div ng-if="!pointersData.target">NA</div>
+                                        </div>
+                                    </div> -->
+                                    
                                 </div>
                             </div>
                         </div>    
