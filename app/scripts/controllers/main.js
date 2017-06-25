@@ -86,7 +86,8 @@ angular.module('stockApp')
         }
 
 
-        blockui.blockUICall();
+        //blockui.blockUICall();
+        $scope.pageloadfinished = false;
 
         var promise1 = $http({
             method: 'GET',
@@ -123,7 +124,7 @@ angular.module('stockApp')
         $q.all([promise1, promise2]).then(function(result) {
             console.log(result);
             $scope.nseCodesArray = result[0].data;
-            blockui.unblockUICall();
+            //blockui.unblockUICall();
             $.getScript("assets/js/paper-dashboard.js", function(data, textStatus, jqxhr) {
             });
 
@@ -144,6 +145,8 @@ angular.module('stockApp')
             $scope.scripCode = queryParams.stock;
             if ($scope.scripCode)
                 $scope.getTicker();
+
+            $scope.pageloadfinished = true;
         });
 
         function findScrip(scrip) {

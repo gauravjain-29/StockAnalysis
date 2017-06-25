@@ -25,14 +25,12 @@
 </head>
 
 <body>
-    <div class="wrapper">
+    <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!pageloadfinished" style="position: absolute; top: 50%; margin-left: 50%;">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+    <div class="wrapper" ng-show="pageloadfinished">
         <div class="sidebar collapse navbar-collapse" data-background-color="white" data-active-color="danger">
-            <!--
-        Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
-        Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
-    -->
-            <!--  <nav>
-                <div class="collapse navbar-collapse" id="myNavbar"> -->
+         
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="#" class="simple-text">
@@ -64,46 +62,10 @@
                             <p>Admin Console</p>
                         </a>
                     </li>
-                    <!--<li>
-                        <a href="table.html">
-                            <i class="ti-view-list-alt"></i>
-                            <p>Table List</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="typography.html">
-                            <i class="ti-text"></i>
-                            <p>Typography</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="icons.html">
-                            <i class="ti-pencil-alt2"></i>
-                            <p>Icons</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="maps.html">
-                            <i class="ti-map"></i>
-                            <p>Maps</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="notifications.html">
-                            <i class="ti-bell"></i>
-                            <p>Notifications</p>
-                        </a>
-                    </li>
-                    <li class="active-pro">
-                        <a href="upgrade.html">
-                            <i class="ti-export"></i>
-                            <p>Upgrade to PRO</p>
-                        </a>
-                    </li> -->
+                    
                 </ul>
             </div>
-            <!-- </div>
-            </nav> -->
+            
         </div>
         <div class="main-panel">
             <nav class="navbar navbar-default">
@@ -155,16 +117,11 @@
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="ti-user"></i>
-                                    <!-- <p class="notification">5</p> -->
                                     <p>{{userDetails.username}}</p>
                                     <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a onclick="logout()" id="logoutElement">Logout</a></li>
-                                    <!-- <li><a href="#">Notification 2</a></li>
-                                    <li><a href="#">Notification 3</a></li>
-                                    <li><a href="#">Notification 4</a></li>
-                                    <li><a href="#">Another notification</a></li> -->
                                 </ul>
                             </li>
                             <li>
@@ -217,7 +174,6 @@ $(document).ready(function(){
 
 $(window).resize(function(){
     window_width = $(window).width();
-    console.log(window_width);
     if(window_width <= 991){
        $(".searchBar").css('float', 'right');
        $(".searchBar").removeClass("col-sm-6");

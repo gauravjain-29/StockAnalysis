@@ -5,7 +5,7 @@ angular.module('stockApp').directive('profilePage', function() {
         templateUrl: 'views/profile.html',
         controller: function($scope, blockui, $http) {
             var baseURL = 'https://django-qa.herokuapp.com/';
-            blockui.blockUICall();
+            //blockui.blockUICall();
 
             $http({
                 method: 'GET',
@@ -27,7 +27,7 @@ angular.module('stockApp').directive('profilePage', function() {
                     }
                 });
             }, function errorCallback(response) {
-                blockui.unblockUICall();
+                //blockui.unblockUICall();
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
             });
