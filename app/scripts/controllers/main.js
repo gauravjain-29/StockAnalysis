@@ -272,6 +272,10 @@ angular.module('stockApp')
             {
                 frequency = 'monthly';
             }
+            else if($scope.frequency == 'Q')
+            {
+                frequency = 'quarterly';
+            }
             else if($scope.frequency == 'Y')
             {
                 frequency = 'yearly';
