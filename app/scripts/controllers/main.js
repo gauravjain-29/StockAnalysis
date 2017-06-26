@@ -207,7 +207,9 @@ angular.module('stockApp')
 
         }
 
+        $scope.frequency = 'D';
         $scope.getTicker = function() {
+
             $scope.chartLoaded = false;
             $scope.tickerDataLoaded = false;
             $scope.homeFunction(false, false);
@@ -257,9 +259,27 @@ angular.module('stockApp')
             }
 
             //blockui.blockUICall();
+            var frequency = '';
+            if($scope.frequency == 'D')
+            {
+                frequency = 'daily';
+            }
+            else if($scope.frequency == 'W')
+            {
+                frequency = 'weekly';
+            }
+            else if($scope.frequency == 'M')
+            {
+                frequency = 'monthly';
+            }
+            else if($scope.frequency == 'Y')
+            {
+                frequency = 'yearly';
+            }
+
             var postdata = {}
             postdata.ticker = $scope.scripCode;
-            postdata.interval = 'daily';
+            postdata.interval = frequency;
             if ($scope.startDate) {
                 postdata.start_date = $scope.startDate;
             }
