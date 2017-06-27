@@ -21,6 +21,12 @@
         border: 0;
         background: transparent;
     }
+
+    ul.autocomplete-custom-template > li
+    {
+        height: 100%;
+        border-bottom: 1px solid #ccc;
+    }
     </style>
 </head>
 
@@ -88,7 +94,22 @@
                                 <div class="col-lg-5 col-sm-6 searchBar" style="margin-top: 14px;">
                                     <div class="card">
                                         <div class="input-group stylish-input-group">
-                                            <input type="text" class="form-control" placeholder="Search" ng-model="scripCode" ng-change="dismissSearch=false;scripCode=scripCode.toUpperCase()">
+                                            <!-- <input type="text" class="form-control" placeholder="Search" ng-model="scripCode" ng-change="dismissSearch=false;scripCode=scripCode.toUpperCase()"> -->
+                                            <md-autocomplete
+                                              md-search-text="scripCode"
+                                              md-items="item in nseCodesArray | filter:scripCode"
+                                              md-item-text="item.Code"
+                                              md-min-length="0"
+                                              placeholder="Select a Stock"
+                                              md-menu-class="autocomplete-custom-template">
+                                            <md-item-template>
+                                                <span>
+                                                    <p md-highlight-text="scripCode" md-highlight-flags="^i">{{item.Name}}</p>
+                                                    <p><a><small md-highlight-text="scripCode" md-highlight-flags="^i">{{item.Code}}</small></a></p>
+                                                </span>
+                                              
+                                            </md-item-template>
+                                          </md-autocomplete>
                                             <span class="input-group-addon">
                                                 <div style="display: inline;">
                                                     <md-tooltip md-direction="bottom">Select frequency, Daily, Weekly, Monthly, Quarterly, Yearly</md-tooltip>
@@ -105,14 +126,14 @@
                                                 </button>
                                             </span>
                                         </div>
-                                        <div style="position: absolute;width: 100%;" ng-show="scripCode && !dismissSearch">
+                                        <!-- <div style="position: absolute;width: 100%;" ng-show="scripCode && !dismissSearch">
                                             <table class="table table-striped table-bordered">
                                                 <tr ng-repeat="scrip in nseCodesArray | filter:scripCode" ng-click="setScrip(scrip.Code)">
                                                     <td>{{scrip.Code}}</td>
                                                     <td>{{scrip.Name}}</td>
                                                 </tr>
                                             </table>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="col-lg-5 col-sm-6" style="float: right;">
