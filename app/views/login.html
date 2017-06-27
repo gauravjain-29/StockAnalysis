@@ -119,6 +119,7 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-login">
+                <md-progress-linear md-mode="indeterminate" ng-show="showProgressBar"></md-progress-linear>
                 <div class="panel-heading">
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" data-target="#login">Login</a></li>
@@ -134,13 +135,13 @@
                                         <div class="col-md-12">
                                             <form id="login-form" ng-submit="login()" style="display: block;">
                                                 <div class="form-group">
-                                                    <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="" ng-model="username">
+                                                    <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="" ng-model="username" ng-disabled="showProgressBar">
                                                     <md-tooltip md-direction="bottom">
                                                         Please enter your username.
                                                     </md-tooltip>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" ng-model="password">
+                                                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" ng-model="password" ng-disabled="showProgressBar">
                                                     <md-tooltip md-direction="bottom">
                                                         Please enter your password.
                                                     </md-tooltip>
@@ -152,7 +153,7 @@
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-sm-6 col-sm-offset-3">
-                                                            <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+                                                            <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In" ng-disabled="showProgressBar">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -176,7 +177,7 @@
                                                         <div class="row">
                                                             <div class="col-lg-12 col-sm-12">
                                                                 <div class="card">
-                                                                        <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" ng-model="reg_username">
+                                                                        <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" ng-model="reg_username" ng-disabled="showProgressBar">
                                                                         <md-tooltip md-direction="bottom">
                                                                             Please choose a username.
                                                                         </md-tooltip>
@@ -187,7 +188,7 @@
                                                             <div class="col-lg-12 col-sm-12">
                                                                 <div class="card">
                                                                     <div class="input-group stylish-input-group">
-                                                                        <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" ng-model="reg_email" ng-change="checkEmail()">
+                                                                        <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" ng-model="reg_email" ng-change="checkEmail()" ng-disabled="showProgressBar">
                                                                         <md-tooltip md-direction="bottom">
                                                                             Please Enter a valid email Id.
                                                                         </md-tooltip>
@@ -220,7 +221,7 @@
                                                         <div class="row">
                                                             <div class="col-lg-12 col-sm-12">
                                                                 <div class="card">
-                                                                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" ng-model="reg_password">
+                                                                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" ng-model="reg_password" ng-disabled="showProgressBar">
                                                                         <md-tooltip md-direction="bottom">
                                                                             Please choose a password.
                                                                         </md-tooltip>
@@ -231,7 +232,7 @@
                                                             <div class="col-lg-12 col-sm-12">
                                                                 <div class="card">
                                                                     <div class="input-group stylish-input-group">
-                                                                        <input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password" ng-model="reg_password_confirm">
+                                                                        <input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password" ng-model="reg_password_confirm" ng-disabled="showProgressBar">
                                                                         <md-tooltip md-direction="bottom">
                                                                             Please re-enter same password.
                                                                         </md-tooltip>
@@ -255,7 +256,7 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-6 col-sm-offset-3">
-                                                                <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now" ng-disabled="!reg_username || emailCheckStatus!=2 || !reg_password || !reg_password_confirm || reg_password_confirm != reg_password">
+                                                                <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now" ng-disabled="!reg_username || emailCheckStatus!=2 || !reg_password || !reg_password_confirm || reg_password_confirm != reg_password || showProgressBar">
                                                             </div>
                                                         </div>
                                                     </div>
