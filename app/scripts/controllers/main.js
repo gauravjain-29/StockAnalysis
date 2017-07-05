@@ -154,6 +154,7 @@ angular.module('stockApp')
 
         $scope.chartLoaded = true;
         $scope.tickerDataLoaded = true;
+        $scope.pointersLoaded = true;
         $scope.draw = function() {
             var shareData = $scope.shareData;
             var formattedData = [];
