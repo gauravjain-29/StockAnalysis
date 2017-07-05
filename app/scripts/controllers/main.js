@@ -100,6 +100,12 @@ angular.module('stockApp')
 
         });
 
+        var promise2 = $http({
+            url: baseURL + 'pointers/?interval=daily',
+            method: 'GET',
+            headers: { Authorization: 'JWT ' + $scope.jwtToken }
+        });
+
         var getUserInterests = function()
         {
             $http({
@@ -118,7 +124,7 @@ angular.module('stockApp')
 
         getUserInterests();
 
-        $q.all([promise1]).then(function(result) {
+        $q.all([promise1, promise2]).then(function(result) {
             console.log(result);
             $scope.nseCodesArray = result[0].data;
             //blockui.unblockUICall();
@@ -137,7 +143,7 @@ angular.module('stockApp')
                 $scope.adminConsoleFunction(false);
             }
 
-            //$scope.pointersData = result[1].data;
+            $scope.pointersData = result[1].data;
             var queryParams = $location.search();
             $scope.scripCode = queryParams.stock;
             if ($scope.scripCode)
@@ -146,9 +152,9 @@ angular.module('stockApp')
             $scope.pageloadfinished = true;
         });
 
-        function findScrip(scrip) {
-            return scrip.ticker == $scope.scripCode;
-        }
+        // function findScrip(scrip) {
+        //     return scrip.ticker == $scope.scripCode;
+        // }
 
         
 
