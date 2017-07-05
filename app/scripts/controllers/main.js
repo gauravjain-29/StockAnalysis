@@ -118,14 +118,7 @@ angular.module('stockApp')
 
         getUserInterests();
 
-        
-        var promise2 = $http({
-            url: baseURL + 'pointers/',
-            method: 'GET',
-            headers: { Authorization: 'JWT ' + $scope.jwtToken }
-        });
-
-        $q.all([promise1, promise2]).then(function(result) {
+        $q.all([promise1]).then(function(result) {
             console.log(result);
             $scope.nseCodesArray = result[0].data;
             //blockui.unblockUICall();
@@ -144,7 +137,7 @@ angular.module('stockApp')
                 $scope.adminConsoleFunction(false);
             }
 
-            $scope.pointersData = result[1].data;
+            //$scope.pointersData = result[1].data;
             var queryParams = $location.search();
             $scope.scripCode = queryParams.stock;
             if ($scope.scripCode)
@@ -212,6 +205,7 @@ angular.module('stockApp')
 
             $scope.chartLoaded = false;
             $scope.tickerDataLoaded = false;
+            $scope.pointersLoaded = false;
             $scope.homeFunction(false, false);
             $location.url('home/?stock=' + $scope.scripCode);
             $scope.history = false;
@@ -333,8 +327,31 @@ angular.module('stockApp')
             });
 
             //find index of seleted scrip in the array of objects
-            var indexOfScrip = $scope.pointersData.findIndex(findScrip);
-            $scope.pointers = $scope.pointersData[indexOfScrip];
+            // var indexOfScrip = $scope.pointersData.findIndex(findScrip);
+            // $scope.pointers = $scope.pointersData[indexOfScrip];
+
+            //Fetch pointers
+            $http({
+                url: baseURL + 'pointers/?ticker='+$scope.scripCode+'&interval='+frequency,
+                method: 'GET',
+                headers: { Authorization: 'JWT ' + $scope.jwtToken }
+            }).then(function successCallback(response) {
+                console.log(response);
+                $scope.pointers = response.data;
+                $scope.pointersLoaded = true;
+            }, function errorCallback(response) {
+                $scope.pointersLoaded = true;
+                $.notify({
+                    icon: 'ti-face-sad',
+                    message: "An Error Occured while fetching pointers."
+
+                }, {
+                    type: 'danger',
+                    timer: 4000
+                });
+                console.log(response.responseText);
+                
+            });
         }
 
         $scope.setScrip = function(scripSelected) {

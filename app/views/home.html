@@ -45,10 +45,13 @@
                             </div>
                         </div>
                         <div class="col-xs-7">
-                            <div class="numbers">
+                            <div layout="row" layout-sm="column" layout-align="space-around" ng-if="!pointersLoaded">
+                                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                            </div>
+                            <div class="numbers" ng-if="pointersLoaded">
                                 <p>Entry</p>
-                                <div ng-if="pointers.entry != null">{{pointers.entry | number:2}}</div>
-                                <div ng-if="pointers.entry == null">N/A</div>
+                                <div ng-if="pointers.entry != null && pointers.entry != 0">{{pointers.entry | number:2}}</div>
+                                <div ng-if="pointers.entry == null || pointers.entry == 0">N/A</div>
                             </div>
                         </div>
                     </div>
@@ -71,10 +74,13 @@
                             </div>
                         </div>
                         <div class="col-xs-7">
-                            <div class="numbers">
+                            <div layout="row" layout-sm="column" layout-align="space-around" ng-if="!pointersLoaded">
+                                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                            </div>
+                            <div class="numbers" ng-if="pointersLoaded">
                                 <p>Target</p>
-                                <div ng-if="pointers.target != null">{{pointers.target | number:2}}</div>
-                                <div ng-if="pointers.target == null">N/A</div>
+                                <div ng-if="pointers.target != null && pointers.entry != 0">{{pointers.target | number:2}}</div>
+                                <div ng-if="pointers.target == null || pointers.entry == 0">N/A</div>
                             </div>
                         </div>
                     </div>
@@ -97,10 +103,13 @@
                             </div>
                         </div>
                         <div class="col-xs-7">
-                            <div class="numbers">
+                            <div layout="row" layout-sm="column" layout-align="space-around" ng-if="!pointersLoaded">
+                                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                            </div>
+                            <div class="numbers" ng-if="pointersLoaded">
                                 <p>Stoploss</p>
-                                <div ng-if="pointers.stopLoss != null">{{pointers.stopLoss | number:2}}</div>
-                                <div ng-if="pointers.stopLoss == null">N/A</div>
+                                <div ng-if="pointers.stopLoss != null && pointers.entry != 0">{{pointers.stopLoss | number:2}}</div>
+                                <div ng-if="pointers.stopLoss == null || pointers.entry == 0">N/A</div>
                             </div>
                         </div>
                     </div>
@@ -123,10 +132,13 @@
                             </div>
                         </div>
                         <div class="col-xs-7">
-                            <div class="numbers">
+                            <div layout="row" layout-sm="column" layout-align="space-around" ng-if="!pointersLoaded">
+                                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                            </div>
+                            <div class="numbers" ng-if="pointersLoaded">
                                 <p>Total Points</p>
-                                <div ng-if="pointers.stopLoss != null">{{pointers.totalPoints}}</div>
-                                <div ng-if="pointers.stopLoss == null">N/A</div>
+                                <div ng-if="pointers.stopLoss != null && pointers.entry != 0">{{pointers.totalPoints}}</div>
+                                <div ng-if="pointers.stopLoss == null || pointers.entry == 0">N/A</div>
                             </div>
                         </div>
                     </div>
@@ -140,7 +152,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" ng-show="pointers.totalPoints >= 7">
         <div class="col-md-12">
             <div class="card">
                 <div class="content">
