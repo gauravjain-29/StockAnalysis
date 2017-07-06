@@ -23,7 +23,10 @@
                     <tr>
                         <th>Stock Code</th>
                         <th>Stock Name</th>
-                        <th>Pointers</th>
+                        <th>Entry</th>
+                        <th>Target</th>
+                        <th>Stoploss</th>
+                        <th>Total Points</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -31,65 +34,29 @@
                         <td>{{data.ticker_details.Code}}</td>
                         <td>{{data.ticker_details.Name}}</td>
                         <td ng-init="pointers = getPointersForDashboard(data.ticker_details.Code)">
-                            <div class="row">
-                                <div class="col-lg-12 col-sm-12">
-                                    <div class="card">
-                                        <md-tooltip md-direction="bottom">
-                                        GAP UP: {{pointers.gapUp}}<br />
-                                        TIME SPEND: {{pointers.timeSpend}}<br />
-                                        EARNING: {{pointers.earning}}<br />
-                                        HIGH: {{pointers.high}}<br />
-                                        FRESHNESS: {{pointers.freshness}}<br />
-                                        DIVIDEND: {{pointers.dividend}}<br />
-                                        TREND: {{pointers.trend}}
-                                        </md-tooltip>
-                                        <table class="table">
-                                            <tr style="background: cornsilk;">
-                                                <td style="border: none;">Entry</td>
-                                                <td style="border: none;">Target</td>
-                                                <td style="border: none;">Stoploss</td>
-                                                <td style="border: none;">Total Points</td>
-                                            </tr>
-                                            <tr style="background: cornsilk;">
-                                                <td style="border: none;" ng-if="pointers.entry">{{pointers.entry}}</td>
-                                                <td style="border: none;" ng-if="!pointers.entry">NA</td>
-                                                <td style="border: none;" ng-if="pointers.entry">{{pointers.target}}</td>
-                                                <td style="border: none;" ng-if="!pointers.entry">NA</td>
-                                                <td style="border: none;" ng-if="pointers.entry">{{pointers.stopLoss}}</td>
-                                                <td style="border: none;" ng-if="!pointers.entry">NA</td>
-                                                <td style="border: none;" ng-if="pointers.entry">{{pointers.totalPoints}}</td>
-                                                <td style="border: none;" ng-if="!pointers.entry">NA</td>
-                                            </tr>
-                                        </table>
-                                        <!-- <div class="row">
-                                            <div class="col-xs-3">
-                                                <p>Entry</p>
-                                                <div ng-if="pointersData.entry">{{pointersData.entry}}</div>
-                                                <div ng-if="!pointersData.entry">NA</div>
-                                            </div>
-                                            <div class="col-xs-3">
-                                                <p>Target</p>
-                                                <div ng-if="pointersData.target">{{pointersData.target}}</div>
-                                                <div ng-if="!pointersData.target">NA</div>
-                                            </div>
-                                            <div class="col-xs-3">
-                                                <p>Stoploss</p>
-                                                <div ng-if="pointersData.stopLoss">{{pointersData.stopLoss}}</div>
-                                                <div ng-if="!pointersData.target">NA</div>
-                                            </div>
-                                            <div class="col-xs-3">
-                                                <p>TotalPoints</p>
-                                                <div ng-if="pointersData.totalPoints">{{pointersData.totalPoints}}</div>
-                                                <div ng-if="!pointersData.target">NA</div>
-                                            </div>
-                                        </div> -->
-                                        
-                                    </div>
-                                </div>
-                            </div>    
-            <!-- 
-                            <div>Entry: {{pointersData.entry}}</div>
-                            <div>Stoploss: {{pointersData.stopLoss}}</div>, T: {{pointersData.target}}, TP: {{pointersData.totalPoints}}</div> -->
+                            <div ng-show="pointers.entry">{{pointers.entry}}</div>
+                            <div ng-show="!pointers.entry">NA</div>
+                        </td>
+                        <td>
+                            <div ng-show="pointers.target">{{pointers.target}}</div>
+                            <div ng-show="!pointers.target">NA</div>
+                        </td>
+                        <td>
+                            <div ng-show="pointers.stopLoss">{{pointers.stopLoss}}</div>
+                            <div ng-show="!pointers.stopLoss">NA</div>
+                        </td>
+                        <td>
+                            <md-tooltip md-direction="bottom">
+                                GAP UP: {{pointers.gapUp}}<br />
+                                TIME SPEND: {{pointers.timeSpend}}<br />
+                                EARNING: {{pointers.earning}}<br />
+                                HIGH: {{pointers.high}}<br />
+                                FRESHNESS: {{pointers.freshness}}<br />
+                                DIVIDEND: {{pointers.dividend}}<br />
+                                TREND: {{pointers.trend}}
+                            </md-tooltip>
+                            <div ng-show="pointers.totalPoints">{{pointers.totalPoints}}</div>
+                            <div ng-show="!pointers.totalPoints">NA</div>
                         </td>
                     </tr>
                     </tbody>
