@@ -2,6 +2,7 @@
     <div class="card">
         <div class="header">
             <h4 class="title" style="display: inline;">Favourite Stocks</h4>
+            <i class="fa fa-refresh" aria-hidden="true" style="cursor: pointer;" ng-click="updatePointers()"></i>
             <div style="float: right;">
                 Select Frequency:
                 <select ng-model="dashboardFrequency" ng-change="updatePointers()" style="background: transparent; border: none;">
@@ -18,11 +19,15 @@
                 <md-progress-circular md-mode="indeterminate"></md-progress-circular>
             </div>
             <div ng-if="!reloading">
-                <table class="table table-striped" datatable="ng">
+                <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!renderTable">
+                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                </div>
+                <table class="table table-striped" datatable="ng" ng-show="renderTable">
                 <thead>
                     <tr>
                         <th>Stock Code</th>
                         <th>Stock Name</th>
+                        <th>CMP</th>
                         <th>Entry</th>
                         <th>Target</th>
                         <th>Stoploss</th>
@@ -34,6 +39,10 @@
                         <td>{{data.ticker_details.Code}}</td>
                         <td>{{data.ticker_details.Name}}</td>
                         <td ng-init="pointers = getPointersForDashboard(data.ticker_details.Code)">
+                            <div ng-show="pointers.cmp">{{pointers.cmp}}</div>
+                            <div ng-show="!pointers.cmp">NA</div>
+                        </td>
+                        <td>
                             <div ng-show="pointers.entry">{{pointers.entry}}</div>
                             <div ng-show="!pointers.entry">NA</div>
                         </td>
