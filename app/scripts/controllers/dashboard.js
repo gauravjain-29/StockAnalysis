@@ -17,7 +17,7 @@ angular.module('stockApp').directive('dashboard', function() {
                 $scope.renderTable = true;
                 scripTofind = scripCode;
                 var indexOfScrip = $scope.pointersData.findIndex(findScrip);
-                $scope.pointersData[indexOfScrip].cmp = $scope.liveData[scripCode];
+                //$scope.pointersData[indexOfScrip].cmp = $scope.liveData[scripCode];
                 return $scope.pointersData[indexOfScrip];
             }
 
@@ -37,15 +37,15 @@ angular.module('stockApp').directive('dashboard', function() {
                     $scope.reloading = false;
                 })*/;
 
-                var promise2 = $http({
-                    url: baseURL + 'getCurrentPrice/',
-                    method: 'GET',
-                    headers: { Authorization: 'JWT ' + $scope.jwtToken }
-                });
+                // var promise2 = $http({
+                //     url: baseURL + 'getCurrentPrice/',
+                //     method: 'GET',
+                //     headers: { Authorization: 'JWT ' + $scope.jwtToken }
+                // });
 
-                $q.all([promise1, promise2]).then(function(response) {
+                $q.all([promise1]).then(function(response) {
                     $scope.pointersData = response[0].data;
-                    $scope.liveData = response[1].data;
+                    //$scope.liveData = response[1].data;
                     $scope.reloading = false;
                 }, function(reason) {
                     $scope.reloading = false;

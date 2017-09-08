@@ -27,7 +27,7 @@
                     <tr>
                         <th>Stock Code</th>
                         <th>Stock Name</th>
-                        <th>CMP</th>
+                        <!-- <th>CMP</th> -->
                         <th>Entry</th>
                         <th>Target</th>
                         <th>Stoploss</th>
@@ -38,11 +38,11 @@
                     <tr ng-repeat="data in userInterests" ng-if="data.interested">
                         <td>{{data.ticker_details.Code}}</td>
                         <td>{{data.ticker_details.Name}}</td>
-                        <td ng-init="pointers = getPointersForDashboard(data.ticker_details.Code)">
+                        <!-- <td ng-init="pointers = getPointersForDashboard(data.ticker_details.Code)">
                             <div ng-show="pointers.cmp">{{pointers.cmp}}</div>
                             <div ng-show="!pointers.cmp">NA</div>
-                        </td>
-                        <td>
+                        </td> -->
+                        <td ng-init="pointers = getPointersForDashboard(data.ticker_details.Code)">
                             <div ng-show="pointers.entry">{{pointers.entry}}</div>
                             <div ng-show="!pointers.entry">NA</div>
                         </td>
