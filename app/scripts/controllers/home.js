@@ -4,8 +4,8 @@ angular.module('stockApp').directive('homePage', function() {
         scope: false,
         templateUrl: 'views/home.html',
         controller: function($scope, $cookies, jwtHelper, $http, blockui, $state) {
-            var baseURL = 'https://django-qa.herokuapp.com/';
-
+            //var baseURL = 'https://django-qa.herokuapp.com/';
+            var baseURL = 'https://django-prod.herokuapp.com/';
 
             $scope.isCollapsed = true;
             $scope.jwtToken = $cookies.get('jwtOAuthToken');

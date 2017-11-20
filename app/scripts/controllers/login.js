@@ -49,7 +49,8 @@ angular.module('stockApp').controller('LoginController', function($scope, $rootS
         }
     });
 
-    var baseURL = 'https://django-qa.herokuapp.com/';
+    //var baseURL = 'https://django-qa.herokuapp.com/';
+    var baseURL = 'https://django-prod.herokuapp.com/';
     // $scope.blockUICall = function(message) {
     //     $.blockUI({
     //         message: message,

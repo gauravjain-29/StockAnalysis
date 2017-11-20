@@ -35,7 +35,8 @@ angular.module('stockApp')
             return;
         }
 
-        var baseURL = 'https://django-qa.herokuapp.com/';
+        //var baseURL = 'https://django-qa.herokuapp.com/';
+        var baseURL = 'https://django-prod.herokuapp.com/';
 
         $scope.userProfileFunction = function(doDigest) {
             $scope.pageToDisplay = 'profile';

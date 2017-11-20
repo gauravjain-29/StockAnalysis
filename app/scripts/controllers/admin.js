@@ -4,7 +4,8 @@ angular.module('stockApp').directive('admin', function() {
         scope: false,
         templateUrl: 'views/admin.html',
         controller: function($scope, $cookies, jwtHelper, $http, blockui) {
-            var baseURL = 'https://django-qa.herokuapp.com/';
+            //var baseURL = 'https://django-qa.herokuapp.com/';
+            var baseURL = 'https://django-prod.herokuapp.com/';
         	$scope.updateFavoriteStocks = function()
             {
                 blockui.blockUICall();

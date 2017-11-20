@@ -6,7 +6,8 @@ angular.module('stockApp').directive('dashboard', function() {
         controller: function($scope, $cookies, jwtHelper, $http, blockui, $q) {
             var scripTofind = '';
             $scope.dashboardFrequency = 'Daily';
-            var baseURL = 'https://django-qa.herokuapp.com/';
+            //var baseURL = 'https://django-qa.herokuapp.com/';
+            var baseURL = 'https://django-prod.herokuapp.com/';
             function findScrip(scrip) {
                 return scrip.ticker == scripTofind;
             }

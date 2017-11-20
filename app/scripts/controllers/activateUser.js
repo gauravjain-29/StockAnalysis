@@ -5,7 +5,8 @@ angular.module('stockApp')
     	var queryParams = $location.search();
     	var uid = queryParams.uid;
     	var token = queryParams.token;
-    	var baseURL = 'https://django-qa.herokuapp.com/';
+    	//var baseURL = 'https://django-qa.herokuapp.com/';
+        var baseURL = 'https://django-prod.herokuapp.com/';
     	$http({
             method: 'POST',
             url: baseURL + 'activate/',

@@ -4,7 +4,8 @@ angular.module('stockApp').directive('profilePage', function() {
         scope: false,
         templateUrl: 'views/profile.html',
         controller: function($scope, blockui, $http) {
-            var baseURL = 'https://django-qa.herokuapp.com/';
+            //var baseURL = 'https://django-qa.herokuapp.com/';
+            var baseURL = 'https://django-prod.herokuapp.com/';
             //blockui.blockUICall();
 
             $http({
